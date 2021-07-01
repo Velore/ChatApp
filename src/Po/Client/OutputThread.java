@@ -38,7 +38,7 @@ public class OutputThread extends Thread{
                 //判断是否输入注销命令
                 if(!"end".equals(input)){
                     //非注销命令交给命令分析器处理
-                    this.client.outputMsg = MsgUtils.msgAnalyse(MsgUtils.msgSplit(input), this.client.user);
+                    this.client.outputMsg = MsgUtils.inputAnalyse(MsgUtils.inputSplit(input), this.client.user);
                     //输入分析器将分析结果返回至交互对象
                     if(this.client.outputMsg == null){
                         System.out.println("输入分析失败");

@@ -63,7 +63,7 @@ public class Server extends Thread{
         System.out.println(userList);
         groupList = StorageUtils.objToGroup(StorageUtils.read(GROUP_FILE_PATH));
         System.out.println(groupList);
-        ArrayList<ChatMessage> msgTmp = StorageUtils.objToMsg(StorageUtils.read(MSG_FILE_PATH));
+        ArrayList<ChatMessage> msgTmp = StorageUtils.readMsg(MSG_FILE_PATH);
         //把聊天记录加载到对应群组的聊天记录上
         for(Group g : groupList){
             for(ChatMessage cm : msgTmp){

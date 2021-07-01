@@ -1,11 +1,14 @@
 package Utils;
 
+import Bo.LoginBo;
 import Po.Common.Message.ChatMessage;
 import Po.Common.Message.InfoMessage;
 import Po.Common.Message.Message;
 import Po.Common.Message.UpdateMessage;
 import Po.Common.User;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,16 +19,33 @@ import java.util.regex.Pattern;
 public class MsgUtils {
 
     /**
-     * 正则表达式的匹配规则
-     * 匹配多个小写字母，大写字母和数字，排除其他符号
+     * 正则表达式的匹配规则1
+     * 匹配多个大小写字母和数字
      */
-    private static final Pattern MSG_PATTERN = Pattern.compile("(\\w+)");
+//    public static final Pattern MSG_PATTERN = Pattern.compile("(\\w+)");
+
+    /**
+     * 正则表达式的匹配规则2
+     * 匹配多个中文字符,大小写字母和数字
+     */
+//    public static final Pattern MSG_PATTERN = Pattern.compile("([\\u4e00-\\u9fa5_a-zA-Z0-9]+)");
+
+    /**
+     * 正则表达式的匹配规则3
+     * 匹配多个中文字符,大小写字母和数字和某些标点符号
+     */
+    public static final Pattern MSG_PATTERN = Pattern.compile("([\\u4e00-\\u9fa5_a-zA-Z0-9\\p{P}]+)");
+
+
+    public static final Pattern STR_PATTERN = Pattern.compile("(^\t+)");
+
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");;
 
     /**
      * @param input 要切割的输入字符串
      * @return 完成切割的字符串数组prevMsg
      */
-    public static ArrayList<String> msgSplit(String input){
+    public static ArrayList<String> inputSplit(String input){
         ArrayList<String> prevMsg = new ArrayList<>();
 //        去除输入两端的空格后进行正则匹配
         Matcher m = MsgUtils.MSG_PATTERN.matcher(input.strip());
@@ -41,7 +61,7 @@ public class MsgUtils {
      * @param prevMsg 要分析的字符串数组
      * @return 不同类型的Message
      */
-    public static Message msgAnalyse(ArrayList<String> prevMsg, User userTemp){
+    public static Message inputAnalyse(ArrayList<String> prevMsg, User userTemp){
         StringBuilder msg = new StringBuilder();
         if(prevMsg.size() == 2){
             //发送信息简写：格式[gid msg]
@@ -109,11 +129,34 @@ public class MsgUtils {
         return null;
     }
 
+    /**
+     * 将聊天记录的对象转换为可输出的字符串
+     * @param chatMsgList 聊天记录的列表
+     * @return 字符串列表
+     */
     public static ArrayList<String> chatMsgToString(ArrayList<ChatMessage> chatMsgList){
         ArrayList<String> msgStrList= new ArrayList<>();
         for(ChatMessage cm : chatMsgList){
             msgStrList.add(cm.toString());
         }
         return msgStrList;
+    }
+
+    /**
+     * 将字符串转换为聊天记录的对象，用于从文件中读取聊天记录时
+     * @param s 要转换的字符串
+     * @param pattern 正则表达式的匹配规则，一般用MsgUtils自带的静态规则匹配即可
+     * @return 聊天记录的对象
+     */
+    public static ChatMessage stringToChatMsg(String s, Pattern pattern){
+        ChatMessage cm = new ChatMessage();
+        cm.msgType = 'c';
+        ArrayList<String> strList = MsgUtils.inputSplit(s);
+        cm.setGid(strList.get(0));
+        cm.sendTime = LocalDateTime.parse(strList.get(1), DATE_TIME_FORMATTER);
+        cm.loginBo = new LoginBo();
+        cm.loginBo.setLoginUid(strList.get(2));
+        cm.setMsgStr(strList.get(3));
+        return cm;
     }
 }

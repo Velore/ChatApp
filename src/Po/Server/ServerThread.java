@@ -2,6 +2,7 @@ package Po.Server;
 
 import Bo.LoginBo;
 import Po.Common.Group;
+import Po.Common.Message.ChatMessage;
 import Po.Common.Message.InfoMessage;
 import Po.Common.Message.Message;
 import Po.Common.Message.StatusMessage;
@@ -64,6 +65,7 @@ public class ServerThread extends Thread{
                         //客户端修改用户信息
                         if(UserUtils.isOnline(user, Server.loginList)){
                             UserUtils.updateUser(user, msgTemp.loginBo);
+                            //将用户的修改保存进文件
                             StorageUtils.write(StorageUtils.userToObj(Server.userList), Server.USER_FILE_PATH, false);
                         }else{
                             //客户端登录,新建登录信息
@@ -82,9 +84,16 @@ public class ServerThread extends Thread{
                         break;
                     case 'c':
                         //将聊天信息发给对应群组的每个成员
-                        if(Group.sendMsg(msgTemp)==-1){
+                        int code = Group.sendMsg(msgTemp);
+                        if(code == -1){
                             System.out.println("没有找到对应群组");
+                            this.output.writeObject(new InfoMessage("没有找到对应群组"));
+                        }else if(code == -2){
+                            System.out.println("请先加入该群组");
+                            this.output.writeObject(new InfoMessage("请先加入该群组"));
                         }else{
+                            //将聊天信息保存入聊天记录的文件
+                            StorageUtils.writeMsg((ChatMessage) msgTemp, Server.MSG_FILE_PATH);
                             System.out.println("聊天信息"+ msgTemp +"已发送");
                         }
                         break;
@@ -131,6 +140,7 @@ public class ServerThread extends Thread{
                                 }
                                 break;
                             default:
+                                im.addInfo("infoType无效"+im.getInfoType());
                                 System.out.println("infoType无效"+im.getInfoType());
                         }
                         this.output.writeObject(im);

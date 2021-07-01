@@ -27,6 +27,17 @@ public class InfoMessage extends Message{
      */
     private ArrayList<String> infoList;
 
+    /**
+     * 系统给客户端发送的通知信息，无需回复
+     * @param info 系统通知
+     */
+    public InfoMessage(String info){
+        this.sendTime = LocalDateTime.now();
+        this.msgType = 'i';
+        this.infoList = new ArrayList<>();
+        this.addInfo(info);
+    }
+
     public InfoMessage(char infoType, ArrayList<String> specType){
         this.sendTime = LocalDateTime.now();
         this.msgType = 'i';

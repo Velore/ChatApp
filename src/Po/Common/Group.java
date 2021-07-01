@@ -44,7 +44,7 @@ public class Group implements Serializable {
     /**
      * 聊天记录
      */
-    private transient ArrayList<ChatMessage> msgList;
+    private ArrayList<ChatMessage> msgList;
 
     public Group(String uid) {
         this.gid = RandomUtils.intString(GID_LENGTH);
@@ -58,6 +58,7 @@ public class Group implements Serializable {
         return "Group{" +
                 "gid='" + gid + '\'' +
                 ", memberList=" + memberList +
+                ", msgList=" + msgList +
                 '}';
     }
 
@@ -94,6 +95,20 @@ public class Group implements Serializable {
     }
 
     /**
+     * 某用户是否为该群组的成员
+     * @param uid 用户uid
+     * @return 是该群组成员返回true，否则返回false
+     */
+    public boolean containsMember(String uid){
+        for(String u : this.memberList){
+            if(u.equals(uid)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 通过gid查找群组列表的某个群组
      * @param gid 群组id
      * @param groupList 群组列表
@@ -120,6 +135,10 @@ public class Group implements Serializable {
             //没有找到对应的群组
             return -1;
         }
+        if(!sendGroup.containsMember(msg.loginBo.getLoginUid())){
+            //发送消息的用户不是该群组的成员
+            return -2;
+        }
         //对群组内成员一一判断是否在线
         for(LoginBo loginBo : Server.loginList){
             for(String memberId : sendGroup.memberList){
@@ -143,6 +162,8 @@ public class Group implements Serializable {
             }
         }
         //消息发送成功
+        //将聊天信息加入群组聊天记录
+        sendGroup.msgList.add(cm);
         return 0;
     }
 

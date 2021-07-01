@@ -1,10 +1,12 @@
 package Utils;
 
+import Bo.LoginBo;
 import Po.Common.Group;
 import Po.Common.Message.ChatMessage;
 import Po.Common.User;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
@@ -114,5 +116,50 @@ public class StorageUtils {
      */
     public static ArrayList<Object> msgToObj(ArrayList<ChatMessage> msgList){
         return new ArrayList<>(msgList);
+    }
+
+    /**
+     * 将聊天记录写入文件
+     * @param cm 聊天记录
+     * @param filePath 写入文件的路径
+     */
+    public static void writeMsg(ChatMessage cm, String filePath){
+        File file = new File(filePath);
+        try{
+            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file, true), StandardCharsets.UTF_8);
+            writer.write(cm.getGid()+"\t");
+            writer.write(cm.sendTime.format(MsgUtils.DATE_TIME_FORMATTER)+"\t");
+            writer.write(cm.loginBo.getLoginUid()+"\t");
+            writer.write(cm.getInfo());
+            writer.write("\n");
+            writer.flush();
+            writer.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 将文件中存放的聊天记录读出列表，便于
+     * @param filePath
+     * @return
+     */
+    public static ArrayList<ChatMessage> readMsg(String filePath){
+        ArrayList<ChatMessage> msgList = new ArrayList<>();
+        File file = new File(filePath);
+        try{
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            new FileInputStream(file), StandardCharsets.UTF_8
+                    )
+            );
+            while(reader.ready()){
+                String prevMsg = reader.readLine();
+                msgList.add(MsgUtils.stringToChatMsg(prevMsg, MsgUtils.STR_PATTERN));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return msgList;
     }
 }
