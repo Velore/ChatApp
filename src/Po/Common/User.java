@@ -151,8 +151,7 @@ public class User implements Serializable {
                 }
             }
             if(group == null){
-                //在这一步，群组必定存在，该if只是防止警告，
-                System.out.println("群组不存在");
+                //在这一步，群组必定存在，该判断只是防止编译器警告，
                 return;
             }
             if(!group.getMemberList().contains(this.uid)){
@@ -172,7 +171,9 @@ public class User implements Serializable {
     }
 
     public void addFriend(String uid){
-        this.friendList.add(uid);
+        if(!this.friendList.contains(uid)){
+            this.friendList.add(uid);
+        }
     }
 
     public void delFriend(String uid){

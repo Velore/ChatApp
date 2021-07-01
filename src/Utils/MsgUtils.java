@@ -110,7 +110,7 @@ public class MsgUtils {
                             break;
                         case "addf":
                             //新增好友
-                            //目前没有对好友有任何判断，可以加自己为好友
+                            //目前没有对好友做任何判断，可以加自己为好友
                             userTemp.addFriend(prevMsg.get(i+1));
                             break;
                         case "delf":

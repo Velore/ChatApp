@@ -17,6 +17,8 @@ public class Client {
     public Socket socket;
     public User user;
     public LoginBo loginBo;
+//    public OutputThread ot;
+//    public InputThread it;
 
     /**
      * 接收的Message
@@ -57,9 +59,11 @@ public class Client {
     //    客户端与服务器进行交互的方法
     public void interactions() {
         OutputThread ot = new OutputThread(this);
+//        this.ot = new OutputThread(this);
         System.out.println(this.socket);
         ot.start();
         InputThread it = new InputThread(this);
+//        this.it = new InputThread(this);
         it.start();
     }
 

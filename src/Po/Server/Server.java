@@ -90,7 +90,6 @@ public class Server extends Thread{
         }catch (IOException e){
             e.printStackTrace();
         }finally {
-            StorageUtils.write(StorageUtils.groupToObj(groupList), GROUP_FILE_PATH, false);
             try {if(this.serverSocket!=null){
                 this.serverSocket.close();
             }

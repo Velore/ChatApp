@@ -59,6 +59,8 @@ public class ServerThread extends Thread{
                         this.output.close();
                         this.input.close();
                         this.socket.close();
+                        System.out.println("用户"+this.loginBo.getLoginUid()+"注销");
+                        System.out.println(Server.loginList.toString());
                         break;
                     case 'u':
                         User user = (User) msgTemp.getInfo();
@@ -128,7 +130,7 @@ public class ServerThread extends Thread{
                                 break;
                             case 'c':
                                 //查找对应gid的聊天信息
-                                System.out.println("用户"+msgTemp.loginBo.getLoginUid()+"查询聊天信息");
+                                System.out.println("用户"+msgTemp.loginBo.getLoginUid()+"查询"+im.getSpecType()+"聊天信息");
                                 if(Group.findGroup(im.getSpecType().get(0), Server.groupList)){
                                     for(Group g : Server.groupList){
                                         if(g.getGid().equals(im.getSpecType().get(0))){
