@@ -1,7 +1,9 @@
 package Po.Client;
 
 import Po.Common.Message.StatusMessage;
+import Po.Common.Message.UpdateMessage;
 import Utils.MsgUtils;
+import Utils.UserUtils;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -24,10 +26,18 @@ public class OutputThread extends Thread{
         String input;
         try {
             ObjectOutputStream oos = new ObjectOutputStream(this.client.socket.getOutputStream());
-            //发送登录信息
-            oos.writeObject(this.client.outputMsg);
-            oos.flush();
-            oos.reset();
+            // 重新输入帐号和密码，直至服务器端传过来了一个loginBo，代表登录成功
+            do{
+                this.client.user = UserUtils.userLogin();
+                this.client.outputMsg = new UpdateMessage(this.client.user);
+                //发送登录信息
+                oos.writeObject(this.client.outputMsg);
+                oos.flush();
+                synchronized (this){
+                    this.wait(100);
+                }
+//                oos.reset();
+            }while(this.client.inputMsg.loginBo==null);
             this.client.outputMsg.loginBo = this.client.loginBo;
             while (!this.client.socket.isClosed()){
                 //客户端输入
@@ -58,7 +68,7 @@ public class OutputThread extends Thread{
                 }
             }
             oos.close();
-        } catch (IOException e){
+        } catch (IOException | InterruptedException e){
             e.printStackTrace();
         }
     }

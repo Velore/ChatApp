@@ -46,6 +46,13 @@ public class Group implements Serializable {
      */
     private ArrayList<ChatMessage> msgList;
 
+    public Group(String gid, String uid){
+        this.gid = gid;
+        this.memberList = new ArrayList<>();
+        this.memberList.add(uid);
+        this.msgList = new ArrayList<>();
+    }
+
     public Group(String uid) {
         this.gid = RandomUtils.intString(GID_LENGTH);
         this.memberList = new ArrayList<>();
@@ -169,12 +176,12 @@ public class Group implements Serializable {
 
     public static void main(String[] args) {
         ArrayList<Group> groupList = StorageUtils.objToGroup(StorageUtils.read(Server.GROUP_FILE_PATH));
-        Group g1 = new Group("u1");
+        Group g1 = new Group("10001","u1");
         g1.addMember("u2");
         g1.addMember("u3");
         g1.addMember("u4");
         groupList.add(g1);
-        Group g2 = new Group("u4");
+        Group g2 = new Group("10002","u4");
         g2.addMember("u5");
         groupList.add(g2);
         StorageUtils.write(StorageUtils.groupToObj(groupList), Server.GROUP_FILE_PATH, false);

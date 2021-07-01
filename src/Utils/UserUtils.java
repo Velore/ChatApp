@@ -76,13 +76,14 @@ public class UserUtils {
      * @param user 客户端登录的用户
      * @return 服务器生成的用户登录信息
      */
-    public static LoginBo userLoginConfirm(User user) throws Exception {
+    public static LoginBo userLoginConfirm(User user){
         for(User u : Server.userList){
             if(u.getUid().equals(user.getUid())&&u.getPwd().equals(user.getPwd())){
                 return new LoginBo(u.getUid());
             }
         }
-        throw new Exception("帐号或密码错误");
+        System.out.println("帐号或密码错误");
+        return null;
     }
 
     public static void updateUser(User user, LoginBo loginBo){

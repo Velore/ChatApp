@@ -49,8 +49,8 @@ public class Client {
         Client newClient = new Client(address, port);
         System.out.println("Client "+ newClient.socket.getLocalPort() +" online");
         System.out.println("正在登录");
-        newClient.user = UserUtils.userLogin();
-        newClient.outputMsg = new UpdateMessage(newClient.user);
+//        newClient.user = UserUtils.userLogin();
+//        newClient.outputMsg = new UpdateMessage(newClient.user);
 //        客户端与服务器交互
         newClient.interactions();
         return newClient;

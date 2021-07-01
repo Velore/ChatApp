@@ -3,13 +3,22 @@ package Po.Common;
 import Po.Server.Server;
 import Utils.RandomUtils;
 import Utils.StorageUtils;
-import Utils.UserUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
 /**
+ * 用户类
+ * 内置用户信息如下
+ * 帐号 姓名 密码 所在群组列表 好友列表
+ * uid name pwd groupList friendList
+ * u1 t1 p1 [97349] [u2,u3]
+ * u2 n2 p2 [97349] [u1]
+ * u3 n3 p3 [97349] [u1]
+ * u4 n4 p4 [97349, 59838] []
+ * u5 n5 p5 [59838] []
+ * u6 n6 p6 [] []
  * @author chenzhuohong
  */
 public class User implements Serializable {
@@ -18,6 +27,11 @@ public class User implements Serializable {
      * 序列化版本号
      */
     private static final long serialVersionUID = 101010L;
+
+    /**
+     * User类的addGroup方法内，该静态表放在Server，Group内都会无法加载，只能放在User自己的静态域内才能加载
+     */
+    public static ArrayList<Group> staticGroup = StorageUtils.objToGroup(StorageUtils.read(Server.GROUP_FILE_PATH));
 
     /**
      * 用户id的长度
@@ -31,6 +45,7 @@ public class User implements Serializable {
 
     /**
      * 用户名字
+     * 暂时没有用的字段，代码全部使用uid
      */
     private String name;
 
@@ -46,10 +61,19 @@ public class User implements Serializable {
 
     /**
      * 用户的好友列表
+     * 目前该字段没有用，若有空会新建Friend类的列表取代
      */
     private ArrayList<String> friendList;
 
     public User(){
+        this.groupList = new ArrayList<>();
+        this.friendList = new ArrayList<>();
+    }
+
+    public User(String uid, String name, String pwd){
+        this.uid = uid;
+        this.name = name;
+        this.pwd = pwd;
         this.groupList = new ArrayList<>();
         this.friendList = new ArrayList<>();
     }
@@ -140,7 +164,7 @@ public class User implements Serializable {
     }
 
     public void addGroup(String gid){
-        if(Group.findGroup(gid, Server.groupList)){
+        if(Group.findGroup(gid, staticGroup)){
             if(!this.groupList.contains(gid)){
                 this.groupList.add(gid);
             }
@@ -158,7 +182,10 @@ public class User implements Serializable {
                 group.addMember(this.uid);
             }
         }else{
-            System.out.println("群组不存在");
+            Server.groupList.add(new Group(gid, this.uid));
+            StorageUtils.write(StorageUtils.groupToObj(Server.groupList), Server.GROUP_FILE_PATH, false);
+            this.groupList.add(gid);
+            System.out.println("群组"+gid+"已创建");
         }
     }
 
@@ -182,40 +209,37 @@ public class User implements Serializable {
 
     public static void main(String[] args){
 
-        ArrayList<User> userList = StorageUtils.objToUser(StorageUtils.read(Server.USER_FILE_PATH));
-//        ArrayList<User> userList = new ArrayList<>();
-//        System.out.println(userList);
-//        User u1 = new User();
-//        u1.uid = "u1";
-//        u1.name = "n1";
-//        u1.pwd = "p1";
-//        userList.add(u1);
-//        User u2 = new User();
-//        u2.uid = "u2";
-//        u2.name = "n2";
-//        u2.pwd = "p2";
-//        userList.add(u2);
-//        User u3 = new User();
-//        u3.uid = "u3";
-//        u3.name = "n3";
-//        u3.pwd = "p3";
-//        userList.add(u3);
-//        User u4 = new User();
-//        u4.uid = "u4";
-//        u4.name = "n4";
-//        u4.pwd = "p4";
-//        userList.add(u4);
-//        User u5 = new User();
-//        u5.uid = "u5";
-//        u5.name = "n5";
-//        u5.pwd = "p5";
-//        userList.add(u5);
-//        User u6 = new User();
-//        u6.uid = "u6";
-//        u6.name = "n6";
-//        u6.pwd = "p6";
-//        userList.add(u6);
-//        StorageUtils.write(StorageUtils.userToObj(userList), Server.USER_FILE_PATH, false);
+//        ArrayList<User> userList = StorageUtils.objToUser(StorageUtils.read(Server.USER_FILE_PATH));
+        ArrayList<User> userList = new ArrayList<>();
+        System.out.println(userList);
+        User u1 = new User("u1", "n1", "p1");
+        u1.getGroupList().add("10001");
+        u1.addFriend("u2");
+        u1.addFriend("u3");
+        userList.add(u1);
+        User u2 = new User("u2", "n2", "p2");
+
+        u2.getGroupList().add("10001");
+        u2.addFriend("u1");
+        userList.add(u2);
+        User u3 = new User("u3", "n3", "p3");
+
+        u3.getGroupList().add("10001");
+        u3.addFriend("u1");
+        userList.add(u3);
+        User u4 = new User("u4", "n4", "p4");
+
+        u4.getGroupList().add("10001");
+        u4.getGroupList().add("10002");
+        userList.add(u4);
+        User u5 = new User("u5", "n5", "p5");
+
+        u5.getGroupList().add("10002");
+
+        userList.add(u5);
+        User u6 = new User("u6", "n6", "p6");
+        userList.add(u6);
+        StorageUtils.write(StorageUtils.userToObj(userList), Server.USER_FILE_PATH, false);
         System.out.println(userList);
     }
 }

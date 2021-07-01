@@ -14,6 +14,7 @@ import Utils.UserUtils;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * @author chenzhuohong
@@ -61,26 +62,41 @@ public class ServerThread extends Thread{
                         this.socket.close();
                         System.out.println("用户"+this.loginBo.getLoginUid()+"注销");
                         System.out.println(Server.loginList.toString());
+                        //通知注销用户的好友，该用户已下线
                         break;
                     case 'u':
                         User user = (User) msgTemp.getInfo();
                         //客户端修改用户信息
                         if(UserUtils.isOnline(user, Server.loginList)){
-                            UserUtils.updateUser(user, msgTemp.loginBo);
-                            //将用户的修改保存进文件
-                            StorageUtils.write(StorageUtils.userToObj(Server.userList), Server.USER_FILE_PATH, false);
+                            //防止同一用户在不同客户端登录造成修改用户信息的错误情况
+                            if(this.loginBo.equals(msgTemp.loginBo)){
+                                UserUtils.updateUser(user, msgTemp.loginBo);
+                                //将用户的修改保存进文件
+                                StorageUtils.write(StorageUtils.userToObj(Server.userList), Server.USER_FILE_PATH, false);
+                            }else{
+                                System.out.println("帐号重复登录");
+                            }
                         }else{
                             //客户端登录,新建登录信息
                             LoginBo loginBo = UserUtils.userLoginConfirm(user);
-                            //给自己带上登录信息
-                            this.loginBo = loginBo;
-                            //将登录信息加入服务器登录列表
-                            Server.loginList.add(loginBo);
-                            //将登录信息传给客户端
-                            this.output.writeObject(new StatusMessage(loginBo));
-                            System.out.println("登录信息["+loginBo+"]已发送,目前User在线数量:"+Server.loginList.size());
-                            for(LoginBo l : Server.loginList){
-                                System.out.println("登录用户Uid[" +l.getLoginUid()+"]\n");
+                            if(loginBo!=null){
+                                //给自己带上登录信息
+                                this.loginBo = loginBo;
+                                //将登录信息加入服务器登录列表
+                                Server.loginList.add(loginBo);
+                                //将登录信息传给客户端
+                                this.output.writeObject(new StatusMessage(loginBo));
+                                System.out.println("登录信息["+loginBo+"]已发送,目前User在线数量:"+Server.loginList.size());
+                                for(LoginBo l : Server.loginList){
+                                    System.out.println("登录用户Uid[" +l.getLoginUid()+"]\n");
+                                }
+                                for(ServerThread st : Server.threadList){
+                                    if(!st.loginBo.equals(this.loginBo)){
+                                        st.output.writeObject(new InfoMessage(user.getUid()+"已上线"));
+                                    }
+                                }
+                            }else{
+                                this.output.writeObject(new InfoMessage("帐号或密码错误"));
                             }
                         }
                         break;

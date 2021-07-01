@@ -70,6 +70,7 @@ public class MsgUtils {
         }else if(prevMsg.size() > 2){
             if("send".equals(prevMsg.get(0))){
                 //格式[send gid msg]
+                //格式[send 群组id 聊天信息]
                 return new ChatMessage(prevMsg.get(1), msg.append(prevMsg.get(2)).toString());
             }else if("info".equals(prevMsg.get(0))){
                 //默认返回用户信息
@@ -110,7 +111,7 @@ public class MsgUtils {
                             break;
                         case "addf":
                             //新增好友
-                            //目前没有对好友做任何判断，可以加自己为好友
+                            //目前只对好友做了重复添加判断，但是可以加自己为好友
                             userTemp.addFriend(prevMsg.get(i+1));
                             break;
                         case "delf":
