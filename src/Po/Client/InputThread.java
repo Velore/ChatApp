@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 /**
+ * 客户端接收服务器端的输入线程类
  * @author chenzhuohong
  */
 public class InputThread extends Thread{

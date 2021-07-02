@@ -18,10 +18,10 @@ public class Message implements Serializable {
     public LoginBo loginBo;
     /**
      * 消息的类型
-     * c:服务器端新的聊天记录，子类为ChatMessage
-     * u:客户端修改用户信息，子类为UpdateMessage
-     * s:客户端登录或注销，子类为StatusMessage
-     * i:客户端查询信息，子类为InfoMessage
+     * c:客户端发送给服务器端，或者服务器端发送给客户端[新的聊天记录]，子类为ChatMessage
+     * u:客户端第一次登录时，登录后修改用户信息，子类为UpdateMessage
+     * s:服务器端发送登录信息给客户端，或客户端注销时向服务器端发送，子类为StatusMessage
+     * i:客户端查询信息，服务器端返回查询结果，子类为InfoMessage
      */
     public char msgType;
     /**

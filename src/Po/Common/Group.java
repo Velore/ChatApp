@@ -32,21 +32,24 @@ public class Group implements Serializable {
 
     /**
      * 群组id的长度
+     * 一般用不上
      */
     private final static int GID_LENGTH = 5;
 
     /**
      * 群组的id
+     * 每个群组都有的唯一的id
      */
     private final String gid;
 
     /**
-     * 存放用户帐号
+     * 群组的成员列表，存放用户帐号
      */
-    private ArrayList<String> memberList;
+    private final ArrayList<String> memberList;
 
     /**
-     * 聊天记录
+     * 聊天记录列表，服务器端初始化时从文件中加载
+     * 服务器每接收到用户的聊天信息，就保存在对应群组的聊天记录列表中
      */
     private ArrayList<ChatMessage> msgList;
 
@@ -78,10 +81,6 @@ public class Group implements Serializable {
 
     public ArrayList<String> getMemberList() {
         return memberList;
-    }
-
-    public void setMemberList(ArrayList<String> memberList) {
-        this.memberList = memberList;
     }
 
     public void addMember(String uid){
@@ -133,6 +132,11 @@ public class Group implements Serializable {
         return false;
     }
 
+    /**
+     * 群组向群组内成员发送信息
+     * @param msg 要发送的信息
+     * @return 发送的结果：-1:群组不存在，-2:发送消息的用户不是该群组的成员
+     */
     public static int sendMsg(Message msg){
         ChatMessage cm = (ChatMessage) msg;
         Group sendGroup = null;
@@ -180,6 +184,7 @@ public class Group implements Serializable {
     public static void main(String[] args) {
         ArrayList<Group> groupList = new ArrayList<>();
 //        ArrayList<Group> groupList = StorageUtils.objToGroup(StorageUtils.read(Server.GROUP_FILE_PATH));
+        //重置群组为初始群组
         Group g1 = new Group("10001","u1");
         g1.addMember("u2");
         g1.addMember("u3");
@@ -188,6 +193,8 @@ public class Group implements Serializable {
         Group g2 = new Group("10002","u4");
         g2.addMember("u5");
         groupList.add(g2);
+        Group g3 = new Group("12345", "u1");
+        g3.addMember("u6");
         StorageUtils.write(StorageUtils.groupToObj(groupList), Server.GROUP_FILE_PATH, false);
         System.out.println(groupList);
     }

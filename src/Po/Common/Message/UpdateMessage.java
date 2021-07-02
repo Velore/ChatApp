@@ -1,11 +1,12 @@
 package Po.Common.Message;
 
-import Po.Common.Message.Message;
 import Po.Common.User;
 
 import java.time.LocalDateTime;
 
 /**
+ * 客户端登录时发送一个只包含帐号和密码的用户信息
+ * 登录后，客户端发送给服务器端需要更新的用户信息
  * @author chenzhuohong
  */
 public class UpdateMessage extends Message {
@@ -23,10 +24,6 @@ public class UpdateMessage extends Message {
     @Override
     public User getInfo() {
         return this.updateUser;
-    }
-
-    public void setUpdateUser(User updateUser) {
-        this.updateUser = updateUser;
     }
 
     @Override

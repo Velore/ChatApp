@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
+ * 客户端主启动类
+ * 直接运行即可
  * @author chenzhuohong
  */
 public class Client {

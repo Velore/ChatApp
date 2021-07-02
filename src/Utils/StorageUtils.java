@@ -1,6 +1,5 @@
 package Utils;
 
-import Bo.LoginBo;
 import Po.Common.Group;
 import Po.Common.Message.ChatMessage;
 import Po.Common.User;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 /**
  * 持久化工具类
  * 包括从文件中读取数据read，将数据写入文件write
+ * 因为持久化形式的不同，聊天记录用单独的readMsg和writeMsg
  * @author chenzhuohong
  */
 public class StorageUtils {
@@ -27,11 +27,6 @@ public class StorageUtils {
         try(
                 ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))
         ){
-//            while(ois.available()!=0){
-//                Object o = ois.readObject();
-//                System.out.println(o.toString());
-//                objList.add(o);
-//            }
             //只能强转
             objList = (ArrayList<Object>) ois.readObject();
         }catch (EOFException e){
@@ -53,11 +48,7 @@ public class StorageUtils {
         try(
                 ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file, isAppend))
         ){
-//            for(Object o : objList){
-//                oos.writeObject(o.toString()+"\n");
-//                oos.flush();
-//            }
-            //不能一个个写，否则读不出来
+            //由于Java序列化的问题，只能存在列表中一起全部写入，不能一个个写入文件，否则读不出来
             oos.writeObject(objList);
         }catch (Exception e){
             e.printStackTrace();
@@ -101,24 +92,6 @@ public class StorageUtils {
     }
 
     /**
-     * 把Object列表转换为chatMessage列表
-     */
-    public static ArrayList<ChatMessage> objToMsg(ArrayList<Object> objList){
-        ArrayList<ChatMessage> msgList = new ArrayList<>();
-        for(Object o : objList){
-            msgList.add((ChatMessage) o);
-        }
-        return msgList;
-    }
-
-    /**
-     * 把chatMessage列表转换成Object列表
-     */
-    public static ArrayList<Object> msgToObj(ArrayList<ChatMessage> msgList){
-        return new ArrayList<>(msgList);
-    }
-
-    /**
      * 将聊天记录写入文件
      * @param cm 聊天记录
      * @param filePath 写入文件的路径
@@ -140,9 +113,9 @@ public class StorageUtils {
     }
 
     /**
-     * 将文件中存放的聊天记录读出列表，便于
-     * @param filePath
-     * @return
+     * 将文件中存放的聊天记录读出到列表，便于修改
+     * @param filePath 存放文件的路径
+     * @return 聊天记录的列表
      */
     public static ArrayList<ChatMessage> readMsg(String filePath){
         ArrayList<ChatMessage> msgList = new ArrayList<>();

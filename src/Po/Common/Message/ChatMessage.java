@@ -1,13 +1,14 @@
 package Po.Common.Message;
 
 import Bo.LoginBo;
-import Po.Server.Server;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 
 /**
+ * 在客户端和服务器端之间传递的聊天信息
+ * 客户端发送给服务器
+ * 服务器再发送给其他的客户端
  * @author chenzhuohong
  */
 public class ChatMessage extends Message {

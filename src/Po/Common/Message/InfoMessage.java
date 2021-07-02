@@ -4,22 +4,23 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
- * 返回客户端需要查看的信息
+ * 客户端发送给服务器需要查询的对象
+ * 服务器返回客户端查询的结果信息
  * @author chenzhuohong
  */
 public class InfoMessage extends Message{
 
     /**
-     * 客户端向服务器请求的信息类型
+     * 客户端向服务器查询的信息类型
      * u:用户信息，g:群组信息，c:聊天信息
      */
     private char infoType;
 
     /**
-     * 请求的具体参数
-     * 若infoType是u，specType内存放uid(可多个)
-     * 若infoType是g，specTYpe内存放gid(可多个)
-     * 若infoType是c，specType内存放群组gid(唯一)
+     * 查询的具体参数
+     * 若infoType是u，specType内存放uid(可多个)，代表查询用户信息
+     * 若infoType是g，specTYpe内存放gid(可多个)，代表查询群组信息
+     * 若infoType是c，specType内存放群组gid(唯一)，代表查询聊天信息
      */
     private ArrayList<String> specType;
     /**

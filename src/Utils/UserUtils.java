@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
+ * 用户工具类
+ * 包括用户登录和用户注册
  * @author chenzhuohong
  */
 public class UserUtils {
@@ -61,6 +63,12 @@ public class UserUtils {
         return false;
     }
 
+    /**
+     * 查询某用户是否在线
+     * @param user 查询用户
+     * @param loginList 在线列表
+     * @return 查询结果，在线返回true，离线返回false
+     */
     public static boolean isOnline(User user, ArrayList<LoginBo> loginList){
         if(!loginList.isEmpty()){
             for(LoginBo l : loginList){
@@ -120,8 +128,10 @@ public class UserUtils {
                 }else{
                     //没有找到对应群组则新建一个
                     Server.groupList.add(new Group(gid, user.getUid()));
+                    //把新建的群组添加进服务器端的群组列表
                     Server.userList.get(index).getGroupList().add(gid);
                     System.out.println("群组"+gid+"已创建");
+                    //向在线用户广播新建的群组
                     try{
                         for(ServerThread st : Server.threadList){
                             st.getOutput().writeObject(new InfoMessage("用户"+user.getUid()+"新建群组"+gid+"快来加入聊天吧"));

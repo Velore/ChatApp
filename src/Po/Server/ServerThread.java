@@ -16,6 +16,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
+ * 服务器端为每一个连接的客户端新建一个处理线程ServerThread
+ * 功能包括接收服务器发送的Message和发送对应的结果Message
  * @author chenzhuohong
  */
 public class ServerThread extends Thread{
@@ -90,6 +92,7 @@ public class ServerThread extends Thread{
                                 for(LoginBo l : Server.loginList){
                                     System.out.println("登录用户Uid[" +l.getLoginUid()+"]\n");
                                 }
+                                //向在线用户广播某用户已上线
                                 for(ServerThread st : Server.threadList){
                                     if(!st.loginBo.equals(this.loginBo)){
                                         st.output.writeObject(new InfoMessage(user.getUid()+"已上线"));

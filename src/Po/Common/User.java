@@ -52,13 +52,13 @@ public class User implements Serializable {
     /**
      * 用户所在的群组的列表
      */
-    private ArrayList<String> groupList;
+    private final ArrayList<String> groupList;
 
     /**
      * 用户的好友列表
      * 目前该字段没有用，若有空会新建Friend类的列表取代
      */
-    private ArrayList<String> friendList;
+    private final ArrayList<String> friendList;
 
     public User(){
         this.groupList = new ArrayList<>();
@@ -154,10 +154,10 @@ public class User implements Serializable {
         return this.groupList;
     }
 
-    public void setGroupList(ArrayList<String> groupList){
-        this.groupList = groupList;
-    }
-
+    /**
+     * 用户申请进入群组，若群组不存在，则新建一个该id的群组
+     * @param gid 要申请或建立的群组id
+     */
     public void addGroup(String gid){
         if(Group.findGroup(gid, Server.groupList)){
             if(!this.groupList.contains(gid)){
@@ -185,16 +185,22 @@ public class User implements Serializable {
         return this.friendList;
     }
 
-    public void setFriendList(ArrayList<String> friendList){
-        this.friendList = friendList;
-    }
-
+    /**
+     * 添加好友
+     * 不重复添加
+     * @param uid 添加的好友帐号
+     */
     public void addFriend(String uid){
         if(!this.friendList.contains(uid)){
             this.friendList.add(uid);
         }
     }
 
+    /**
+     * 删除好友
+     * 该方法暂时有问题
+     * @param uid 要删除的好友帐号
+     */
     public void delFriend(String uid){
         if(this.getFriendList().contains(uid)){
             this.friendList.remove(uid);

@@ -10,8 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 /**
- * 客户端主启动类
- * 直接运行即可
+ * 客户端输出给服务器端的线程类
  * @author chenzhuohong
  */
 public class OutputThread extends Thread{
@@ -39,6 +38,7 @@ public class OutputThread extends Thread{
                     this.wait(100);
                 }
             }while(this.client.inputMsg.loginBo==null);
+            //获取接收到的登录信息
             this.client.outputMsg.loginBo = this.client.loginBo;
             while (!this.client.socket.isClosed()){
                 //客户端输入
@@ -47,7 +47,7 @@ public class OutputThread extends Thread{
                     input = send.nextLine();
                 }while (input == null);
                 //判断是否输入注销命令
-                //注销命令存在问题
+                //！！！警告：注销命令存在问题
                 if(!"end".equals(input)){
                     //非注销命令交给命令分析器处理
                     this.client.outputMsg = MsgUtils.inputAnalyse(MsgUtils.inputSplit(input), this.client.user);
@@ -57,12 +57,14 @@ public class OutputThread extends Thread{
                     }else{
                         //在交互对象中加入登录信息
                         this.client.outputMsg.loginBo = this.client.loginBo;
+                        //发送登录信息给服务器端进行登录验证
                         oos.writeObject(this.client.outputMsg);
                         oos.flush();
                         oos.reset();
                     }
                 }else {
                     //客户端发送注销信息后离线
+                    //但是这是输入线程还未停止，需要修改
                     oos.writeObject(new StatusMessage(this.client.loginBo));
                     oos.flush();
                     oos.reset();

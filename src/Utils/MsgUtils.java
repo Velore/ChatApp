@@ -76,6 +76,7 @@ public class MsgUtils {
                 //默认返回用户信息
                 char infoType = 'u';
                 ArrayList<String> specType = new ArrayList<>();
+                //将查询对象的查询类型添加到InfoMessage中
                 switch (prevMsg.get(1)){
                     case "u":
                         infoType = 'u';
@@ -89,11 +90,14 @@ public class MsgUtils {
                     default:
                         System.out.println("未识别的参数"+prevMsg.get(1));
                 }
+                //添加查询的具体信息到InfoMessage中
                 for(int i = 2;i< prevMsg.size();i++){
                     specType.add(prevMsg.get(i));
                 }
+                //向服务器发送查询信息
                 return new InfoMessage(infoType, specType);
             }else if("alter".equals(prevMsg.get(0))){
+                //修改用户信息
                 //格式[alter 属性1 值1 属性2 值2...]
                 for(int i = 1 ; i < prevMsg.size() ; i = i + 2){
                     switch (prevMsg.get(i)){
@@ -116,18 +120,20 @@ public class MsgUtils {
                             break;
                         case "delf":
                             //删除好友
-                            //这个目前没有实现
+                            //这个目前没有实现，或者说该方法有问题
                             userTemp.delFriend(prevMsg.get(i+1));
                             break;
                         default:
                             System.out.println("未识别的参数"+prevMsg.get(i));
                     }
                 }
+                //发送更新用户的信息
                 return new UpdateMessage(userTemp);
             }
         }else{
             System.out.println("请输入正确的指令");
         }
+        //没有识别对应的命令时，返回null
         return null;
     }
 
