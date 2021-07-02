@@ -13,12 +13,12 @@ import java.util.Objects;
  * 内置用户信息如下
  * 帐号 姓名 密码 所在群组列表 好友列表
  * uid name pwd groupList friendList
- * u1 t1 p1 [97349] [u2,u3]
- * u2 n2 p2 [97349] [u1]
- * u3 n3 p3 [97349] [u1]
- * u4 n4 p4 [97349, 59838] []
- * u5 n5 p5 [59838] []
- * u6 n6 p6 [] []
+ * u1 t1 p1 [10001,12345] [u2,u3]
+ * u2 n2 p2 [10001] [u1,u6]
+ * u3 n3 p3 [10001] [u1]
+ * u4 n4 p4 [10001, 10002] []
+ * u5 n5 p5 [10002] []
+ * u6 n6 p6 [12345] [u2]
  * @author chenzhuohong
  */
 public class User implements Serializable {
@@ -27,11 +27,6 @@ public class User implements Serializable {
      * 序列化版本号
      */
     private static final long serialVersionUID = 101010L;
-
-    /**
-     * User类的addGroup方法内，该静态表放在Server，Group内都会无法加载，只能放在User自己的静态域内才能加载
-     */
-    public static ArrayList<Group> staticGroup = StorageUtils.objToGroup(StorageUtils.read(Server.GROUP_FILE_PATH));
 
     /**
      * 用户id的长度
@@ -164,7 +159,7 @@ public class User implements Serializable {
     }
 
     public void addGroup(String gid){
-        if(Group.findGroup(gid, staticGroup)){
+        if(Group.findGroup(gid, Server.groupList)){
             if(!this.groupList.contains(gid)){
                 this.groupList.add(gid);
             }
@@ -182,10 +177,7 @@ public class User implements Serializable {
                 group.addMember(this.uid);
             }
         }else{
-            Server.groupList.add(new Group(gid, this.uid));
-            StorageUtils.write(StorageUtils.groupToObj(Server.groupList), Server.GROUP_FILE_PATH, false);
-            this.groupList.add(gid);
-            System.out.println("群组"+gid+"已创建");
+            System.out.println("群组"+gid+"不存在");
         }
     }
 
@@ -204,7 +196,9 @@ public class User implements Serializable {
     }
 
     public void delFriend(String uid){
-        this.friendList.remove(uid);
+        if(this.getFriendList().contains(uid)){
+            this.friendList.remove(uid);
+        }
     }
 
     public static void main(String[] args){

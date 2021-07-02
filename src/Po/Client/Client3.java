@@ -1,5 +1,10 @@
 package Po.Client;
 
+/**
+ * 客户端主启动类3
+ * 功能与客户端2相同
+ * @author chenzhuohong
+ */
 public class Client3 extends Client{
     public Client3(String host, int port) {
         super(host, port);

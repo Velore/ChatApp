@@ -12,6 +12,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
+ * 服务器端主启动类
+ * 直接运行即可
  * @author chenzhuohong
  */
 public class Server extends Thread{
@@ -60,9 +62,13 @@ public class Server extends Thread{
      */
     public static void initList(){
         userList = StorageUtils.objToUser(StorageUtils.read(USER_FILE_PATH));
-        System.out.println(userList);
+        for(User u : userList){
+            System.out.println(u.toString()+"\n");
+        }
         groupList = StorageUtils.objToGroup(StorageUtils.read(GROUP_FILE_PATH));
-        System.out.println(groupList);
+        for(Group g : groupList){
+            System.out.println(g.toString()+"\n");
+        }
         ArrayList<ChatMessage> msgTmp = StorageUtils.readMsg(MSG_FILE_PATH);
         //把聊天记录加载到对应群组的聊天记录上
         for(Group g : groupList){

@@ -8,7 +8,6 @@ import Po.Server.ServerThread;
 import Utils.RandomUtils;
 import Utils.StorageUtils;
 
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -17,6 +16,11 @@ import java.util.ArrayList;
  * 群组本身不记录用户状态
  * - 两人单独聊天的群组：用户列表只有两人
  * - 多人聊天的群组，用户列表包含多人
+ * 内置聊天群组如下
+ * gid memberList
+ * 10001 [u1,u2,u3,u4]
+ * 10002 [u4,u5]
+ * 12345 [u1,u6]
  * @author chenzhuohong
  */
 public class Group implements Serializable {
@@ -65,7 +69,6 @@ public class Group implements Serializable {
         return "Group{" +
                 "gid='" + gid + '\'' +
                 ", memberList=" + memberList +
-                ", msgList=" + msgList +
                 '}';
     }
 
@@ -175,7 +178,8 @@ public class Group implements Serializable {
     }
 
     public static void main(String[] args) {
-        ArrayList<Group> groupList = StorageUtils.objToGroup(StorageUtils.read(Server.GROUP_FILE_PATH));
+        ArrayList<Group> groupList = new ArrayList<>();
+//        ArrayList<Group> groupList = StorageUtils.objToGroup(StorageUtils.read(Server.GROUP_FILE_PATH));
         Group g1 = new Group("10001","u1");
         g1.addMember("u2");
         g1.addMember("u3");

@@ -2,10 +2,11 @@ package Utils;
 
 import Bo.LoginBo;
 import Po.Common.Group;
+import Po.Common.Message.InfoMessage;
 import Po.Common.User;
 import Po.Server.Server;
+import Po.Server.ServerThread;
 
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -86,6 +87,11 @@ public class UserUtils {
         return null;
     }
 
+    /**
+     * 更新用户信息
+     * @param user 要更新的用户，不需更新的属性为null
+     * @param loginBo 更新信息需要先登录
+     */
     public static void updateUser(User user, LoginBo loginBo){
         int index = 0;
         if(user==null){
@@ -97,18 +103,48 @@ public class UserUtils {
                 index = Server.userList.indexOf(u);
             }
         }
-        //更新用户群组
-//        if(!user.getGroupList().isEmpty()){
-//            for(String ug : user.getGroupList()){
-//                if(!Group.findGroup(ug, Server.groupList)){
-//                    Server.groupList.add(new Group(user.getUid()));
-//                }else{
-//
-//                }
-//            }
-//        }
-        //将修改保存到服务器的用户列表
-        Server.userList.set(index, user);
+        if(user.getName()==null){
+            user.setName(Server.userList.get(index).getName());
+        }
+        //更新用户的群组列表和群组的成员列表
+        if(!user.getGroupList().isEmpty()){
+            for(String gid : user.getGroupList()){
+                if(Group.findGroup(gid, Server.groupList)){
+                    //对应群组存在则添加新成员
+                    for(Group g : Server.groupList){
+                        if(g.getGid().equals(gid) && !g.containsMember(user.getUid())){
+                            Server.userList.get(index).addGroup(gid);
+                            break;
+                        }
+                    }
+                }else{
+                    //没有找到对应群组则新建一个
+                    Server.groupList.add(new Group(gid, user.getUid()));
+                    Server.userList.get(index).getGroupList().add(gid);
+                    System.out.println("群组"+gid+"已创建");
+                    try{
+                        for(ServerThread st : Server.threadList){
+                            st.getOutput().writeObject(new InfoMessage("用户"+user.getUid()+"新建群组"+gid+"快来加入聊天吧"));
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }
+        //更新用户的好友列表和被添加好友的好友列表
+        if(!user.getFriendList().isEmpty()){
+            for(String uid : user.getFriendList()){
+                for(User friend : Server.userList){
+                    if(friend.getUid().equals(uid)){
+                        Server.userList.get(index).addFriend(uid);
+                        friend.addFriend(user.getUid());
+                        break;
+                    }
+                }
+            }
+        }
     }
 
 }

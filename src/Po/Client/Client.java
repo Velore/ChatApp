@@ -2,9 +2,7 @@ package Po.Client;
 
 import Bo.LoginBo;
 import Po.Common.Message.Message;
-import Po.Common.Message.UpdateMessage;
 import Po.Common.User;
-import Utils.UserUtils;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -17,8 +15,6 @@ public class Client {
     public Socket socket;
     public User user;
     public LoginBo loginBo;
-//    public OutputThread ot;
-//    public InputThread it;
 
     /**
      * 接收的Message
@@ -49,8 +45,6 @@ public class Client {
         Client newClient = new Client(address, port);
         System.out.println("Client "+ newClient.socket.getLocalPort() +" online");
         System.out.println("正在登录");
-//        newClient.user = UserUtils.userLogin();
-//        newClient.outputMsg = new UpdateMessage(newClient.user);
 //        客户端与服务器交互
         newClient.interactions();
         return newClient;
@@ -59,11 +53,9 @@ public class Client {
     //    客户端与服务器进行交互的方法
     public void interactions() {
         OutputThread ot = new OutputThread(this);
-//        this.ot = new OutputThread(this);
         System.out.println(this.socket);
         ot.start();
         InputThread it = new InputThread(this);
-//        this.it = new InputThread(this);
         it.start();
     }
 

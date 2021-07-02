@@ -14,7 +14,6 @@ import Utils.UserUtils;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 
 /**
  * @author chenzhuohong
@@ -69,10 +68,11 @@ public class ServerThread extends Thread{
                         //客户端修改用户信息
                         if(UserUtils.isOnline(user, Server.loginList)){
                             //防止同一用户在不同客户端登录造成修改用户信息的错误情况
-                            if(this.loginBo.equals(msgTemp.loginBo)){
+                            if(this.loginBo.getLoginUid().equals(msgTemp.loginBo.getLoginUid())){
                                 UserUtils.updateUser(user, msgTemp.loginBo);
-                                //将用户的修改保存进文件
+                                //将用户和群组的修改保存进文件
                                 StorageUtils.write(StorageUtils.userToObj(Server.userList), Server.USER_FILE_PATH, false);
+                                StorageUtils.write(StorageUtils.groupToObj(Server.groupList), Server.GROUP_FILE_PATH, false);
                             }else{
                                 System.out.println("帐号重复登录");
                             }

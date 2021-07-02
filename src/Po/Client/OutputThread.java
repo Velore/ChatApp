@@ -10,6 +10,8 @@ import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 /**
+ * 客户端主启动类
+ * 直接运行即可
  * @author chenzhuohong
  */
 public class OutputThread extends Thread{
@@ -36,7 +38,6 @@ public class OutputThread extends Thread{
                 synchronized (this){
                     this.wait(100);
                 }
-//                oos.reset();
             }while(this.client.inputMsg.loginBo==null);
             this.client.outputMsg.loginBo = this.client.loginBo;
             while (!this.client.socket.isClosed()){
@@ -46,6 +47,7 @@ public class OutputThread extends Thread{
                     input = send.nextLine();
                 }while (input == null);
                 //判断是否输入注销命令
+                //注销命令存在问题
                 if(!"end".equals(input)){
                     //非注销命令交给命令分析器处理
                     this.client.outputMsg = MsgUtils.inputAnalyse(MsgUtils.inputSplit(input), this.client.user);

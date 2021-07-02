@@ -107,7 +107,7 @@ public class MsgUtils {
                             break;
                         case "addg":
                             //若群组存在，则申请进入群组；若群组不存在，则新建聊天组
-                            userTemp.addGroup(prevMsg.get(i+1));
+                            userTemp.getGroupList().add(prevMsg.get(i+1));
                             break;
                         case "addf":
                             //新增好友
@@ -116,6 +116,7 @@ public class MsgUtils {
                             break;
                         case "delf":
                             //删除好友
+                            //这个目前没有实现
                             userTemp.delFriend(prevMsg.get(i+1));
                             break;
                         default:
