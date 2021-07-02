@@ -26,7 +26,7 @@ public class InputThread extends Thread{
             ObjectInputStream ois = new ObjectInputStream(this.client.socket.getInputStream());
             while(!this.client.socket.isClosed()) {
                 if(this.client.socket.getInputStream()!=null){
-//                    读取对象流中的对象
+//                    读取服务器端传递的交互对象
                     this.client.inputMsg = (Message) ois.readObject();
                     switch (this.client.inputMsg.msgType){
                         case 's':
@@ -39,7 +39,7 @@ public class InputThread extends Thread{
                             System.out.println(this.client.inputMsg);
                             break;
                         case 'i':
-                            //用户信息，群组信息，或群组的聊天信息
+                            //输出用户信息，群组信息，或群组的聊天信息，或者通知信息
                             InfoMessage im = (InfoMessage) this.client.inputMsg;
                             for(String s : im.getInfo()){
                                 System.out.println(s+"\n");

@@ -1,10 +1,9 @@
 package Bo;
 
 import java.io.Serializable;
-import java.net.Socket;
 
 /**
- * 用户登录信息
+ * 用户登录凭证
  * @author chenzhuohong
  */
 public class LoginBo implements Serializable {

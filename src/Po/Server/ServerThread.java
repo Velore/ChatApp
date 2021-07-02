@@ -79,16 +79,16 @@ public class ServerThread extends Thread{
                                 System.out.println("帐号重复登录");
                             }
                         }else{
-                            //客户端登录,新建登录信息
+                            //客户端登录,新建对应的登录凭证
                             LoginBo loginBo = UserUtils.userLoginConfirm(user);
                             if(loginBo!=null){
-                                //给自己带上登录信息
+                                //给自己带上登录凭证
                                 this.loginBo = loginBo;
-                                //将登录信息加入服务器登录列表
+                                //将登录凭证加入服务器登录列表
                                 Server.loginList.add(loginBo);
-                                //将登录信息传给客户端
+                                //将登录凭证传给客户端
                                 this.output.writeObject(new StatusMessage(loginBo));
-                                System.out.println("登录信息["+loginBo+"]已发送,目前User在线数量:"+Server.loginList.size());
+                                System.out.println("登录凭证["+loginBo+"]已发送,目前User在线数量:"+Server.loginList.size());
                                 for(LoginBo l : Server.loginList){
                                     System.out.println("登录用户Uid[" +l.getLoginUid()+"]\n");
                                 }

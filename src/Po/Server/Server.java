@@ -44,6 +44,7 @@ public class Server extends Thread{
     public static ArrayList<ServerThread> threadList;
 
     public Server(int port){
+        System.out.println("服务器启动中");
         //初始化列表
         userList = new ArrayList<>();
         loginList = new ArrayList<>();
@@ -61,6 +62,7 @@ public class Server extends Thread{
      * 将文件中的信息加载到列表中
      */
     public static void initList(){
+        System.out.println("准备加载持久化文件");
         userList = StorageUtils.objToUser(StorageUtils.read(USER_FILE_PATH));
         for(User u : userList){
             System.out.println(u.toString()+"\n");
@@ -86,11 +88,13 @@ public class Server extends Thread{
         Socket socket;
         try{
             while (true){
-//                监听客户端的请求
+                //监听客户端的请求
                 socket = this.serverSocket.accept();
                 System.out.println(socket+"已连接");
+                //为连接的socket开启一个处理线程ServerThread
                 ServerThread st = new ServerThread(socket);
                 threadList.add(st);
+                //ServerThread开始运行
                 st.start();
             }
         }catch (IOException e){

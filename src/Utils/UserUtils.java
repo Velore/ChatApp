@@ -111,8 +111,11 @@ public class UserUtils {
                 index = Server.userList.indexOf(u);
             }
         }
-        if(user.getName()==null){
-            user.setName(Server.userList.get(index).getName());
+        if(user.getName()!=null){
+            Server.userList.get(index).setName(user.getName());
+        }
+        if(user.getPwd()!=null){
+            Server.userList.get(index).setPwd(user.getPwd());
         }
         //更新用户的群组列表和群组的成员列表
         if(!user.getGroupList().isEmpty()){
