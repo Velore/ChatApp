@@ -1,9 +1,10 @@
-package Po.Client;
+package com.czh.po.Client;
 
-import Po.Common.Message.StatusMessage;
-import Po.Common.Message.UpdateMessage;
-import Utils.MsgUtils;
-import Utils.UserUtils;
+
+import com.czh.po.Common.Message.StatusMessage;
+import com.czh.po.Common.Message.UpdateMessage;
+import com.czh.utils.MsgUtils;
+import com.czh.utils.UserUtils;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

@@ -1,8 +1,9 @@
-package Po.Client;
+package com.czh.po.Client;
 
-import Bo.LoginBo;
-import Po.Common.Message.Message;
-import Po.Common.User;
+
+import com.czh.bo.LoginBo;
+import com.czh.po.Common.Message.Message;
+import com.czh.po.Common.User;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -65,3 +66,4 @@ public class Client {
         Client client1 = clientOnline("127.0.0.1", 6666);
     }
 }
+

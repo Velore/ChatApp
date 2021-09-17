@@ -1,10 +1,11 @@
-package Po.Server;
+package com.czh.po.Server;
 
-import Bo.LoginBo;
-import Po.Common.Group;
-import Po.Common.Message.ChatMessage;
-import Po.Common.User;
-import Utils.StorageUtils;
+
+import com.czh.bo.LoginBo;
+import com.czh.po.Common.Group;
+import com.czh.po.Common.Message.ChatMessage;
+import com.czh.po.Common.User;
+import com.czh.utils.StorageUtils;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -21,17 +22,17 @@ public class Server extends Thread{
     /**
      * 服务器保存用户的文件路径
      */
-    public final static String USER_FILE_PATH = "src/Po/Server/user.txt";
+    public final static String USER_FILE_PATH = "src/main/java/com/czh/po/Server/user.txt";
 
     /**
      * 服务器保存聊天信息的文件路径
      */
-    public final static String MSG_FILE_PATH = "src/Po/Server/msg.txt";
+    public final static String MSG_FILE_PATH = "src/main/java/com/czh/po/Server/msg.txt";
 
     /**
      * 服务器保存群组的文件路径
      */
-    public final static String GROUP_FILE_PATH = "src/Po/Server/group.txt";
+    public final static String GROUP_FILE_PATH = "src/main/java/com/czh/po/Server/group.txt";
 
     public static ArrayList<User> userList;
 
@@ -115,3 +116,4 @@ public class Server extends Thread{
     }
 
 }
+

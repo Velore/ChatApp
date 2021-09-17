@@ -1,4 +1,5 @@
-package Po.Common.Message;
+package com.czh.po.Common.Message;
+
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

@@ -1,7 +1,8 @@
-package Po.Client;
+package com.czh.po.Client;
 
-import Po.Common.Message.InfoMessage;
-import Po.Common.Message.Message;
+
+import com.czh.po.Common.Message.InfoMessage;
+import com.czh.po.Common.Message.Message;
 
 import java.io.EOFException;
 import java.io.IOException;

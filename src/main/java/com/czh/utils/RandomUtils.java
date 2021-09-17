@@ -1,4 +1,5 @@
-package Utils;
+package com.czh.utils;
+
 
 /**
  * @author chenzhuohong

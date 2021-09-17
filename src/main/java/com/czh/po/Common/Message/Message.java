@@ -1,6 +1,7 @@
-package Po.Common.Message;
+package com.czh.po.Common.Message;
 
-import Bo.LoginBo;
+
+import com.czh.bo.LoginBo;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

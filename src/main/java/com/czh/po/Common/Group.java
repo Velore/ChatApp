@@ -1,12 +1,13 @@
-package Po.Common;
+package com.czh.po.Common;
 
-import Bo.LoginBo;
-import Po.Common.Message.ChatMessage;
-import Po.Common.Message.Message;
-import Po.Server.Server;
-import Po.Server.ServerThread;
-import Utils.RandomUtils;
-import Utils.StorageUtils;
+
+import com.czh.bo.LoginBo;
+import com.czh.po.Common.Message.ChatMessage;
+import com.czh.po.Common.Message.Message;
+import com.czh.po.Server.Server;
+import com.czh.po.Server.ServerThread;
+import com.czh.utils.RandomUtils;
+import com.czh.utils.StorageUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;

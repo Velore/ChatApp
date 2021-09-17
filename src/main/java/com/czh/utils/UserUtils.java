@@ -1,11 +1,11 @@
-package Utils;
+package com.czh.utils;
 
-import Bo.LoginBo;
-import Po.Common.Group;
-import Po.Common.Message.InfoMessage;
-import Po.Common.User;
-import Po.Server.Server;
-import Po.Server.ServerThread;
+import com.czh.bo.LoginBo;
+import com.czh.po.Common.Group;
+import com.czh.po.Common.Message.InfoMessage;
+import com.czh.po.Common.User;
+import com.czh.po.Server.Server;
+import com.czh.po.Server.ServerThread;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -161,3 +161,4 @@ public class UserUtils {
     }
 
 }
+

@@ -1,4 +1,4 @@
-package Bo;
+package com.czh.bo;
 
 import java.io.Serializable;
 

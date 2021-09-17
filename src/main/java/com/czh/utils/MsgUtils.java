@@ -1,11 +1,12 @@
-package Utils;
+package com.czh.utils;
 
-import Bo.LoginBo;
-import Po.Common.Message.ChatMessage;
-import Po.Common.Message.InfoMessage;
-import Po.Common.Message.Message;
-import Po.Common.Message.UpdateMessage;
-import Po.Common.User;
+
+import com.czh.bo.LoginBo;
+import com.czh.po.Common.Message.ChatMessage;
+import com.czh.po.Common.Message.InfoMessage;
+import com.czh.po.Common.Message.Message;
+import com.czh.po.Common.Message.UpdateMessage;
+import com.czh.po.Common.User;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -77,19 +78,20 @@ public class MsgUtils {
                 char infoType = 'u';
                 ArrayList<String> specType = new ArrayList<>();
                 //将查询对象的查询类型添加到InfoMessage中
-                switch (prevMsg.get(1)){
-                    case "u":
-                        infoType = 'u';
-                        break;
-                    case "g":
-                        infoType = 'g';
-                        break;
-                    case "c":
-                        infoType = 'c';
-                        break;
-                    default:
-                        System.out.println("未识别的参数"+prevMsg.get(1));
-                }
+//                switch (prevMsg.get(1)){
+//                    case "u":
+//                        infoType = 'u';
+//                        break;
+//                    case "g":
+//                        infoType = 'g';
+//                        break;
+//                    case "c":
+//                        infoType = 'c';
+//                        break;
+//                    default:
+//                        System.out.println("未识别的参数"+prevMsg.get(1));
+//                }
+                infoType = prevMsg.get(1).charAt(0);
                 //添加查询的具体信息到InfoMessage中
                 for(int i = 2;i< prevMsg.size();i++){
                     specType.add(prevMsg.get(i));

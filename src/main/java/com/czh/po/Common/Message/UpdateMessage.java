@@ -1,6 +1,7 @@
-package Po.Common.Message;
+package com.czh.po.Common.Message;
 
-import Po.Common.User;
+
+import com.czh.po.Common.User;
 
 import java.time.LocalDateTime;
 
