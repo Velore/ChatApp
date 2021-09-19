@@ -43,6 +43,11 @@ public class Group implements Serializable {
     private final String gid;
 
     /**
+     * 群主
+     */
+    private String ownerId;
+
+    /**
      * 群组的成员列表，存放用户帐号
      */
     private final ArrayList<String> memberList;
@@ -55,6 +60,7 @@ public class Group implements Serializable {
 
     public Group(String gid, String uid){
         this.gid = gid;
+        this.ownerId = uid;
         this.memberList = new ArrayList<>();
         this.memberList.add(uid);
         this.msgList = new ArrayList<>();
@@ -71,6 +77,7 @@ public class Group implements Serializable {
     public String toString() {
         return "Group{" +
                 "gid='" + gid + '\'' +
+                ", ownerId='" + ownerId + '\'' +
                 ", memberList=" + memberList +
                 '}';
     }

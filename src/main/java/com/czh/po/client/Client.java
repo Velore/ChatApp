@@ -48,12 +48,14 @@ public class Client {
         System.out.println("Client "+ newClient.socket.getLocalPort() +" online");
         System.out.println("正在登录");
 //        客户端与服务器交互
-        newClient.interactions();
+        newClient.interact();
         return newClient;
     }
 
-    //    客户端与服务器进行交互的方法
-    public void interactions() {
+    /**
+     * 客户端与服务器进行交互
+     */
+    public void interact() {
         OutputThread ot = new OutputThread(this);
         System.out.println(this.socket);
         ot.start();
