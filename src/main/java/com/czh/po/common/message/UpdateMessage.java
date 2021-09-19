@@ -1,7 +1,6 @@
-package com.czh.po.Common.Message;
+package com.czh.po.common.message;
 
-
-import com.czh.po.Common.User;
+import com.czh.po.common.User;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +17,7 @@ public class UpdateMessage extends Message {
 
     public UpdateMessage(User user){
         this.sendTime = LocalDateTime.now();
-        this.msgType = 'u';
+        this.setMsgType('u');
         this.updateUser = user;
     }
 
@@ -31,7 +30,7 @@ public class UpdateMessage extends Message {
     public String toString() {
         return "UpdateMessage{" +
                 "loginBo=" + loginBo +
-                ", msgType=" + msgType +
+                ", msgType=" + getMsgType() +
                 ", sendTime=" + sendTime +
                 ", updateUser=" + updateUser +
                 '}';

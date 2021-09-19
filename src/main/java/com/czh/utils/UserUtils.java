@@ -1,11 +1,11 @@
 package com.czh.utils;
 
 import com.czh.bo.LoginBo;
-import com.czh.po.Common.Group;
-import com.czh.po.Common.Message.InfoMessage;
-import com.czh.po.Common.User;
-import com.czh.po.Server.Server;
-import com.czh.po.Server.ServerThread;
+import com.czh.po.common.Group;
+import com.czh.po.common.message.InfoMessage;
+import com.czh.po.common.User;
+import com.czh.po.server.Server;
+import com.czh.po.server.ServerThread;
 
 import java.util.ArrayList;
 import java.util.Scanner;

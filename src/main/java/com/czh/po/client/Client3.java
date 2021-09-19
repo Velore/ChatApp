@@ -1,4 +1,4 @@
-package com.czh.po.Client;
+package com.czh.po.client;
 
 /**
  * 客户端主启动类3

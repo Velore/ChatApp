@@ -1,6 +1,6 @@
-package com.czh.po.Common;
+package com.czh.po.common;
 
-import com.czh.po.Server.Server;
+import com.czh.po.server.Server;
 import com.czh.utils.RandomUtils;
 import com.czh.utils.StorageUtils;
 
@@ -191,7 +191,7 @@ public class User implements Serializable {
      * @param uid 添加的好友帐号
      */
     public void addFriend(String uid){
-        if(!this.friendList.contains(uid)){
+        if(!this.friendList.contains(uid) && !this.uid.equals(uid)){
             this.friendList.add(uid);
         }
     }

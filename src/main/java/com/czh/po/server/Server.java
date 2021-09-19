@@ -1,10 +1,9 @@
-package com.czh.po.Server;
-
+package com.czh.po.server;
 
 import com.czh.bo.LoginBo;
-import com.czh.po.Common.Group;
-import com.czh.po.Common.Message.ChatMessage;
-import com.czh.po.Common.User;
+import com.czh.po.common.Group;
+import com.czh.po.common.message.ChatMessage;
+import com.czh.po.common.User;
 import com.czh.utils.StorageUtils;
 
 import java.io.IOException;
@@ -20,19 +19,24 @@ import java.util.ArrayList;
 public class Server extends Thread{
 
     /**
+     * 服务器保存文件的前缀
+     */
+    public final static String PREFIX = "src/main/java/com/czh";
+
+    /**
      * 服务器保存用户的文件路径
      */
-    public final static String USER_FILE_PATH = "src/main/java/com/czh/po/Server/user.txt";
+    public final static String USER_FILE_PATH = PREFIX + "/po/Server/user.txt";
 
     /**
      * 服务器保存聊天信息的文件路径
      */
-    public final static String MSG_FILE_PATH = "src/main/java/com/czh/po/Server/msg.txt";
+    public final static String MSG_FILE_PATH = PREFIX + "/po/Server/msg.txt";
 
     /**
      * 服务器保存群组的文件路径
      */
-    public final static String GROUP_FILE_PATH = "src/main/java/com/czh/po/Server/group.txt";
+    public final static String GROUP_FILE_PATH = PREFIX + "/po/Server/group.txt";
 
     public static ArrayList<User> userList;
 

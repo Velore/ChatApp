@@ -1,5 +1,4 @@
-package com.czh.po.Common.Message;
-
+package com.czh.po.common.message;
 
 import com.czh.bo.LoginBo;
 
@@ -23,7 +22,7 @@ public class ChatMessage extends Message {
     public ChatMessage(String gid, String msgStr) {
         this.sendTime = LocalDateTime.now();
         this.gid = gid;
-        this.msgType = 'c';
+        this.setMsgType('c');
         this.msgStr = msgStr;
     }
 

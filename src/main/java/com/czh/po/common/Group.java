@@ -1,11 +1,10 @@
-package com.czh.po.Common;
-
+package com.czh.po.common;
 
 import com.czh.bo.LoginBo;
-import com.czh.po.Common.Message.ChatMessage;
-import com.czh.po.Common.Message.Message;
-import com.czh.po.Server.Server;
-import com.czh.po.Server.ServerThread;
+import com.czh.po.common.message.ChatMessage;
+import com.czh.po.common.message.Message;
+import com.czh.po.server.Server;
+import com.czh.po.server.ServerThread;
 import com.czh.utils.RandomUtils;
 import com.czh.utils.StorageUtils;
 

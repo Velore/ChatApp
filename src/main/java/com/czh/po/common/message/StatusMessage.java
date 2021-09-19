@@ -1,5 +1,4 @@
-package com.czh.po.Common.Message;
-
+package com.czh.po.common.message;
 
 import com.czh.bo.LoginBo;
 
@@ -20,7 +19,7 @@ public class StatusMessage extends Message{
 
     public StatusMessage(LoginBo loginBo){
         this.sendTime = LocalDateTime.now();
-        this.msgType = 's';
+        this.setMsgType('s');
         this.loginBo = loginBo;
     }
 
@@ -33,7 +32,7 @@ public class StatusMessage extends Message{
     public String toString() {
         return "StatusMessage{" +
                 "loginBo=" + loginBo +
-                ", msgType=" + msgType +
+                ", msgType=" + getMsgType() +
                 ", sendTime=" + sendTime +
                 '}';
     }

@@ -1,7 +1,7 @@
-package com.czh.po.Common.Message;
-
+package com.czh.po.common.message;
 
 import com.czh.bo.LoginBo;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -24,11 +24,19 @@ public class Message implements Serializable {
      * s:服务器端发送登录信息给客户端，或客户端注销时向服务器端发送，子类为StatusMessage
      * i:客户端查询信息，服务器端返回查询结果，子类为InfoMessage
      */
-    public char msgType;
+    private char msgType;
     /**
      * 消息发送的时间
      */
     public LocalDateTime sendTime;
+
+    public char getMsgType(){
+        return this.msgType;
+    }
+
+    public void setMsgType(char c){
+        this.msgType = c;
+    }
 
     public Object getInfo(){
         return null;

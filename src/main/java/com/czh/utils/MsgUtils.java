@@ -1,12 +1,11 @@
 package com.czh.utils;
 
-
 import com.czh.bo.LoginBo;
-import com.czh.po.Common.Message.ChatMessage;
-import com.czh.po.Common.Message.InfoMessage;
-import com.czh.po.Common.Message.Message;
-import com.czh.po.Common.Message.UpdateMessage;
-import com.czh.po.Common.User;
+import com.czh.po.common.message.ChatMessage;
+import com.czh.po.common.message.InfoMessage;
+import com.czh.po.common.message.Message;
+import com.czh.po.common.message.UpdateMessage;
+import com.czh.po.common.User;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -58,6 +57,53 @@ public class MsgUtils {
     }
 
     /**
+     * 打包用户需要修改的信息
+     * @param prevMsg 需要修改的信息
+     * @param userTemp 需要修改的用户
+     * @return UpdateMessage
+     */
+    public static Message packAlterMsg(ArrayList<String> prevMsg, User userTemp){
+        try{
+            //修改用户信息
+            //格式[alter 属性1 值1 属性2 值2...]
+            for(int i = 1 ; i < prevMsg.size() ; i = i + 2){
+                switch (prevMsg.get(i)){
+                    case "name":
+                        //修改用户名字
+                        userTemp.setName(prevMsg.get(i+1));
+                        break;
+                    case "pwd":
+                        //修改用户密码
+                        userTemp.setPwd(prevMsg.get(i+1));
+                        break;
+                    case "addg":
+                        //若群组存在，则申请进入群组；若群组不存在，则新建聊天组
+                        userTemp.getGroupList().add(prevMsg.get(i+1));
+                        break;
+                    case "addf":
+                        //新增好友
+                        //目前只对好友做了重复添加判断和不能添加自己为好友的判断
+                        userTemp.addFriend(prevMsg.get(i+1));
+                        break;
+                    case "delf":
+                        //删除好友
+                        //这个目前没有实现，或者说该方法有问题
+                        userTemp.delFriend(prevMsg.get(i+1));
+                        break;
+                    default:
+                        System.out.println("未识别的参数"+prevMsg.get(i));
+                }
+            }
+        }catch (IndexOutOfBoundsException e){
+            e.printStackTrace();
+            System.out.println("请按格式输入[alter 属性1 值1 属性2 值2...]");
+        }
+        //发送更新用户的信息
+        return new UpdateMessage(userTemp);
+    }
+
+
+    /**
      * 客户端输入转换为Message
      * @param prevMsg 要分析的字符串数组
      * @return 不同类型的Message
@@ -75,23 +121,9 @@ public class MsgUtils {
                 return new ChatMessage(prevMsg.get(1), msg.append(prevMsg.get(2)).toString());
             }else if("info".equals(prevMsg.get(0))){
                 //默认返回用户信息
-                char infoType = 'u';
                 ArrayList<String> specType = new ArrayList<>();
                 //将查询对象的查询类型添加到InfoMessage中
-//                switch (prevMsg.get(1)){
-//                    case "u":
-//                        infoType = 'u';
-//                        break;
-//                    case "g":
-//                        infoType = 'g';
-//                        break;
-//                    case "c":
-//                        infoType = 'c';
-//                        break;
-//                    default:
-//                        System.out.println("未识别的参数"+prevMsg.get(1));
-//                }
-                infoType = prevMsg.get(1).charAt(0);
+                char infoType = prevMsg.get(1).charAt(0);
                 //添加查询的具体信息到InfoMessage中
                 for(int i = 2;i< prevMsg.size();i++){
                     specType.add(prevMsg.get(i));
@@ -99,38 +131,7 @@ public class MsgUtils {
                 //向服务器发送查询信息
                 return new InfoMessage(infoType, specType);
             }else if("alter".equals(prevMsg.get(0))){
-                //修改用户信息
-                //格式[alter 属性1 值1 属性2 值2...]
-                for(int i = 1 ; i < prevMsg.size() ; i = i + 2){
-                    switch (prevMsg.get(i)){
-                        case "name":
-                            //修改用户名字
-                            userTemp.setName(prevMsg.get(i+1));
-                            break;
-                        case "pwd":
-                            //修改用户密码
-                            userTemp.setPwd(prevMsg.get(i+1));
-                            break;
-                        case "addg":
-                            //若群组存在，则申请进入群组；若群组不存在，则新建聊天组
-                            userTemp.getGroupList().add(prevMsg.get(i+1));
-                            break;
-                        case "addf":
-                            //新增好友
-                            //目前只对好友做了重复添加判断，但是可以加自己为好友
-                            userTemp.addFriend(prevMsg.get(i+1));
-                            break;
-                        case "delf":
-                            //删除好友
-                            //这个目前没有实现，或者说该方法有问题
-                            userTemp.delFriend(prevMsg.get(i+1));
-                            break;
-                        default:
-                            System.out.println("未识别的参数"+prevMsg.get(i));
-                    }
-                }
-                //发送更新用户的信息
-                return new UpdateMessage(userTemp);
+                return packAlterMsg(prevMsg, userTemp);
             }
         }else{
             System.out.println("请输入正确的指令");
@@ -160,7 +161,7 @@ public class MsgUtils {
      */
     public static ChatMessage stringToChatMsg(String s, Pattern pattern){
         ChatMessage cm = new ChatMessage();
-        cm.msgType = 'c';
+        cm.setMsgType('c');
         ArrayList<String> strList = MsgUtils.inputSplit(s);
         cm.setGid(strList.get(0));
         cm.sendTime = LocalDateTime.parse(strList.get(1), DATE_TIME_FORMATTER);

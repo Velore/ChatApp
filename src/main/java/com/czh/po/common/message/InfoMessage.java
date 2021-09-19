@@ -1,5 +1,4 @@
-package com.czh.po.Common.Message;
-
+package com.czh.po.common.message;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,14 +34,14 @@ public class InfoMessage extends Message{
      */
     public InfoMessage(String info){
         this.sendTime = LocalDateTime.now();
-        this.msgType = 'i';
+        this.setMsgType('i');
         this.infoList = new ArrayList<>();
         this.addInfo(info);
     }
 
     public InfoMessage(char infoType, ArrayList<String> specType){
         this.sendTime = LocalDateTime.now();
-        this.msgType = 'i';
+        this.setMsgType('i');
         this.infoType = infoType;
         this.specType = specType;
         this.infoList = new ArrayList<>();
@@ -84,7 +83,7 @@ public class InfoMessage extends Message{
                 ", specType=" + specType +
                 ", infoList=" + infoList +
                 ", loginBo=" + loginBo +
-                ", msgType=" + msgType +
+                ", msgType=" + getMsgType() +
                 ", sendTime=" + sendTime +
                 '}';
     }

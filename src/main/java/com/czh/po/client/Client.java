@@ -1,9 +1,8 @@
-package com.czh.po.Client;
-
+package com.czh.po.client;
 
 import com.czh.bo.LoginBo;
-import com.czh.po.Common.Message.Message;
-import com.czh.po.Common.User;
+import com.czh.po.common.message.Message;
+import com.czh.po.common.User;
 
 import java.io.IOException;
 import java.net.Socket;

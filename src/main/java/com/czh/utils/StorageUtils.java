@@ -1,9 +1,9 @@
 package com.czh.utils;
 
 
-import com.czh.po.Common.Group;
-import com.czh.po.Common.Message.ChatMessage;
-import com.czh.po.Common.User;
+import com.czh.po.common.Group;
+import com.czh.po.common.message.ChatMessage;
+import com.czh.po.common.User;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
