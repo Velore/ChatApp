@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.czh.dao.UserMapper">
+    
+    <resultMap id="UserResultMap" type="com.czh.po.common.User">
+        <id property="uid" jdbcType="VARCHAR" column="uid"/>
+        <result property="name" jdbcType="VARCHAR" column="user_name"/>
+        <result property="pwd" jdbcType="VARCHAR" column="pwd"/>
+        <result property="registerTime" jdbcType="TIMESTAMP" column="register_time"/>
+        <result property="lastOnlineTime" jdbcType="TIMESTAMP" column="last_online_time"/>
+    </resultMap>
+
+    <insert id="addUser" parameterType="com.czh.po.common.User">
+        insert into chat_user(uid, user_name, pwd, register_time, last_online_time)
+        VALUES (#{uid}, #{name}, #{pwd}, #{registerTime}, #{lastOnlineTime})
+    </insert>
+
+    <update id="updateUser" parameterType="com.czh.po.common.User">
+        update chat_user
+        set user_name = #{name}, pwd = #{pwd}, register_time = #{registerTime}, last_online_time = #{lastOnlineTime}
+        where uid = #{uid}
+    </update>
+
+    <delete id="deleteUser" parameterType="String">
+        delete from chat_user where uid = #{uid}
+    </delete>
+
+    <select id="queryAllUser" resultType="com.czh.po.common.User" resultMap="UserResultMap">
+        select * from chat_user
+    </select>
+    
+    <select id="queryUserById" resultType="com.czh.po.common.User" parameterType="String">
+        select * from chat_user where uid = #{id}
+    </select>
+
+    <select id="queryUserByName" resultType="com.czh.po.common.User" resultMap="UserResultMap">
+        select * from chat_user where user_name = #{name}
+    </select>
+    
+</mapper>

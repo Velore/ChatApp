@@ -1,0 +1,51 @@
+package com.czh.dao;
+
+import com.czh.po.common.User;
+
+import java.util.List;
+
+/**
+ * @author chenzhuohong
+ */
+public interface UserMapper {
+
+    /**
+     * 添加用户
+     * @param user 用户
+     */
+    void addUser(User user);
+
+    /**
+     * 更新用户信息
+     * @param user 用户
+     */
+    void updateUser(User user);
+
+    /**
+     * 通过uid删除用户
+     * @param uid uid
+     */
+    void deleteUser(String uid);
+
+    /**
+     * 查询所有的用户
+     * @return 用户list
+     */
+    List<User> queryAllUser();
+
+    /**
+     * 通过uid查询一个用户
+     * @param uid uid
+     * @return User
+     */
+    User queryUserById(String uid);
+
+    /**
+     * 通过名字查询用户
+     * @param name 名字
+     * @return User
+     */
+    List<User> queryUserByName(String name);
+
+
+}
