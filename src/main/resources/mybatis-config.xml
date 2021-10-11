@@ -21,6 +21,7 @@
 
     <mappers>
         <mapper resource="com/czh/dao/UserMapper.xml"/>
+        <mapper resource="com/czh/dao/GroupMapper.xml"/>
     </mappers>
 
 </configuration>

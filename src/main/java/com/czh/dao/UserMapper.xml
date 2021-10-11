@@ -35,8 +35,8 @@
         select * from chat_user where uid = #{id}
     </select>
 
-    <select id="queryUserByName" resultType="com.czh.po.common.User" resultMap="UserResultMap">
-        select * from chat_user where user_name = #{name}
+    <select id="queryUserLikeName" resultType="com.czh.po.common.User" resultMap="UserResultMap">
+        select * from chat_user where user_name like concat('%', #{name}, '%')
     </select>
     
 </mapper>

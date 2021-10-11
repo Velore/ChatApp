@@ -16,7 +16,7 @@ public class UserTest {
             User u = new User("n1", "pwd1");
             u.setLastOnlineTime(LocalDateTime.now());
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            userMapper.addUser(u);
+            System.out.println(userMapper.addUser(u));
             sqlSession.commit();
 
         }catch (Exception e){
@@ -32,7 +32,7 @@ public class UserTest {
             u.setUid("71735");
             u.setLastOnlineTime(LocalDateTime.now());
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            userMapper.updateUser(u);
+            System.out.println(userMapper.updateUser(u));
             sqlSession.commit();
 
         }catch (Exception e){
@@ -45,7 +45,7 @@ public class UserTest {
         SqlSession sqlSession = MybatisUtils.getSqlSession();
         try{
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            userMapper.deleteUser("44895");
+            System.out.println(userMapper.deleteUser("b0le8"));
             sqlSession.commit();
         }catch (Exception e){
             e.printStackTrace();
@@ -81,11 +81,11 @@ public class UserTest {
     }
 
     @Test
-    public void queryUserByName(){
+    public void queryUserLikeName(){
         SqlSession sqlSession = MybatisUtils.getSqlSession();
         try{
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            List<User> userList = userMapper.queryUserByName("n1");
+            List<User> userList = userMapper.queryUserLikeName("n");
 
             for(User user : userList){
                 System.out.println(user.toString());

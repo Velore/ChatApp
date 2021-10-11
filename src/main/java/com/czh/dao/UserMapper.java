@@ -12,20 +12,23 @@ public interface UserMapper {
     /**
      * 添加用户
      * @param user 用户
+     * @return 操作返回值
      */
-    void addUser(User user);
+    int addUser(User user);
 
     /**
      * 更新用户信息
      * @param user 用户
+     * @return 操作返回值
      */
-    void updateUser(User user);
+    int updateUser(User user);
 
     /**
      * 通过uid删除用户
      * @param uid uid
+     * @return 操作返回值
      */
-    void deleteUser(String uid);
+    int deleteUser(String uid);
 
     /**
      * 查询所有的用户
@@ -41,11 +44,10 @@ public interface UserMapper {
     User queryUserById(String uid);
 
     /**
-     * 通过名字查询用户
+     * 通过名字模糊查询用户
      * @param name 名字
      * @return User
      */
-    List<User> queryUserByName(String name);
-
+    List<User> queryUserLikeName(String name);
 
 }

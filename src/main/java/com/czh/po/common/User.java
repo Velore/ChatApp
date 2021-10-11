@@ -79,7 +79,7 @@ public class User implements Serializable {
      * @param pwd 密码
      */
     public User(String pwd){
-        this.uid = RandomUtils.intString(UID_LENGTH);
+        this.uid = RandomUtils.mixString(UID_LENGTH);
         this.name = this.uid;
         this.pwd = pwd;
         this.registerTime = LocalDateTime.now();
@@ -92,7 +92,7 @@ public class User implements Serializable {
      * @param pwd 密码
      */
     public User(String name, String pwd){
-        this.uid = RandomUtils.intString(UID_LENGTH);
+        this.uid = RandomUtils.mixString(UID_LENGTH);
         this.name = name;
         this.pwd = pwd;
         this.registerTime = LocalDateTime.now();
@@ -125,30 +125,6 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(uid);
-    }
-
-    /**
-     * 用户申请进入群组
-     * @param gid 要申请进入的群组id
-     */
-    public void addGroup(String gid){
-
-    }
-
-    /**
-     * 添加好友
-     * 不重复添加
-     * @param uid 添加的好友帐号
-     */
-    public void addFriend(String uid){
-    }
-
-    /**
-     * 删除好友
-     * 该方法暂时有问题
-     * @param uid 要删除的好友帐号
-     */
-    public void delFriend(String uid){
     }
 
     public static void main(String[] args){
