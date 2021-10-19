@@ -14,7 +14,7 @@
 
     <insert id="addUser" parameterType="com.czh.po.common.User">
         insert into chat_user(uid, user_name, pwd, register_time, last_online_time)
-        VALUES (#{uid}, #{name}, #{pwd}, #{registerTime}, #{lastOnlineTime})
+        values (#{uid}, #{name}, #{pwd}, #{registerTime}, #{lastOnlineTime})
     </insert>
 
     <update id="updateUser" parameterType="com.czh.po.common.User">

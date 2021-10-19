@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.czh.dao.GroupMemberMapper">
+
+    <resultMap id="MemberResultMap" type="com.czh.po.common.GroupMember">
+        <id property="uid" jdbcType="VARCHAR" column="member_id"/>
+        <id property="gid" jdbcType="VARCHAR" column="gid"/>
+        <result property="memberAuth" jdbcType="VARCHAR" column="member_auth"/>
+        <result property="joinTime" jdbcType="TIMESTAMP" column="join_time"/>
+    </resultMap>
+
+    <insert id="addMember" parameterType="com.czh.po.common.GroupMember">
+        insert into group_member(member_id, gid) values (#{uid}, #{gid})
+    </insert>
+
+    <delete id="deleteMember" parameterType="String">
+        delete from group_member where member_id = #{arg0} and gid = #{arg1}
+    </delete>
+    
+    <select id="queryMemberById" parameterType="String" resultType="com.czh.po.common.GroupMember">
+        select * from group_member where member_id = #{arg0} and gid = #{arg1}
+    </select>
+
+    <select id="queryAllMember" parameterType="String" resultType="com.czh.po.common.GroupMember">
+        select * from group_member where gid = #{gid}
+    </select>
+
+    <select id="queryMemberLikeName" parameterType="String" resultType="com.czh.po.common.GroupMember">
+        select * from group_member join chat_user cu on cu.user_name like concat('%', #{arg0}, '%') and gid = #{arg1}
+    </select>
+
+</mapper>

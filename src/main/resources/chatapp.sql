@@ -35,7 +35,8 @@ CREATE TABLE IF NOT EXISTS group_member(
     # 加入群组的时间
     join_time TIMESTAMP NOT NULL comment '成员加入时间',
 
-    FOREIGN KEY (member_id) REFERENCES chat_user(uid)
+    FOREIGN KEY (member_id) REFERENCES chat_user(uid),
+    FOREIGN KEY (gid) REFERENCES chat_group(gid)
 ) comment '群组成员';
 
 CREATE TABLE IF NOT EXISTS chat_message(
