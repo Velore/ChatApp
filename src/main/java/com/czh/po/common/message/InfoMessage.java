@@ -1,5 +1,9 @@
 package com.czh.po.common.message;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -8,6 +12,9 @@ import java.util.ArrayList;
  * 服务器返回客户端查询的结果信息
  * @author chenzhuohong
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class InfoMessage extends Message{
 
     /**
@@ -33,34 +40,18 @@ public class InfoMessage extends Message{
      * @param info 系统通知
      */
     public InfoMessage(String info){
-        this.sendTime = LocalDateTime.now();
+        this.setSendTime(LocalDateTime.now());
         this.setMsgType('i');
         this.infoList = new ArrayList<>();
         this.addInfo(info);
     }
 
     public InfoMessage(char infoType, ArrayList<String> specType){
-        this.sendTime = LocalDateTime.now();
+        this.setSendTime(LocalDateTime.now());
         this.setMsgType('i');
         this.infoType = infoType;
         this.specType = specType;
         this.infoList = new ArrayList<>();
-    }
-
-    public char getInfoType() {
-        return infoType;
-    }
-
-    public void setInfoType(char infoType) {
-        this.infoType = infoType;
-    }
-
-    public ArrayList<String> getSpecType() {
-        return specType;
-    }
-
-    public void setSpecType(ArrayList<String> specType) {
-        this.specType = specType;
     }
 
     @Override
@@ -82,9 +73,9 @@ public class InfoMessage extends Message{
                 "infoType=" + infoType +
                 ", specType=" + specType +
                 ", infoList=" + infoList +
-                ", loginBo=" + loginBo +
+                ", senderId=" + getSenderId() +
                 ", msgType=" + getMsgType() +
-                ", sendTime=" + sendTime +
+                ", sendTime=" + getSendTime() +
                 '}';
     }
 }

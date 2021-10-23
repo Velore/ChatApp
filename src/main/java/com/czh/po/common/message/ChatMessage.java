@@ -1,6 +1,9 @@
 package com.czh.po.common.message;
 
 import com.czh.bo.LoginBo;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,16 +14,17 @@ import java.time.format.DateTimeFormatter;
  * 服务器再发送给其他的客户端
  * @author chenzhuohong
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class ChatMessage extends Message {
 
     private String gid;
 
     private String msgStr;
 
-    public ChatMessage() {}
-
     public ChatMessage(String gid, String msgStr) {
-        this.sendTime = LocalDateTime.now();
+        this.setSendTime(LocalDateTime.now());
         this.gid = gid;
         this.setMsgType('c');
         this.msgStr = msgStr;
@@ -31,30 +35,17 @@ public class ChatMessage extends Message {
         return this.msgStr;
     }
 
-    public void setMsgStr(String msgStr) {
-        this.msgStr = msgStr;
-    }
-
-    public String getGid() {
-        return gid;
-    }
-
-    public void setGid(String gid) {
-        this.gid = gid;
-    }
-
     @Override
     public String toString() {
         return "[" + gid + "](" +
-                sendTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ")" +"\t"+
-                loginBo.getLoginUid() +
+                getSendTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ")" +"\t"+
+                getSenderId() +
                 ":{" +this.msgStr + "}";
     }
 
     public static void main(String[] args) {
         ChatMessage cm = new ChatMessage("testGid", "testMsg");
-        cm.loginBo = new LoginBo();
-        cm.loginBo.setLoginUid("testLoginId");
+        cm.setSenderId("testLoginId");
         System.out.println(cm);
     }
 }

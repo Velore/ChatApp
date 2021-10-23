@@ -6,6 +6,20 @@
 
     <properties resource="db.properties"/>
 
+<!--    <properties url=""/>-->
+
+<!--    <properties resource="">-->
+<!--        <property name="" value=""/>-->
+<!--    </properties>-->
+
+    <typeAliases>
+        <typeAlias type="com.czh.bo.LoginBo" alias="LoginBo"/>
+        <typeAlias type="com.czh.po.common.User" alias="User"/>
+        <typeAlias type="com.czh.po.common.Group" alias="Group"/>
+        <typeAlias type="com.czh.po.common.GroupMember" alias="GroupMember"/>
+        <typeAlias type="com.czh.po.common.message.ChatMessage" alias="ChatMsg"/>
+    </typeAliases>
+
     <environments default="dev">
         <environment id="dev">
             <transactionManager type="JDBC"/>
@@ -23,6 +37,7 @@
         <mapper resource="com/czh/dao/UserMapper.xml"/>
         <mapper resource="com/czh/dao/GroupMapper.xml"/>
         <mapper resource="com/czh/dao/GroupMemberMapper.xml"/>
+        <mapper resource="com/czh/dao/ChatMsgMapper.xml"/>
     </mappers>
 
 </configuration>

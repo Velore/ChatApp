@@ -1,7 +1,6 @@
 package com.czh.dao;
 
 import com.czh.po.common.GroupMember;
-import com.czh.po.common.User;
 
 import java.util.List;
 
@@ -19,19 +18,19 @@ public interface GroupMemberMapper {
 
     /**
      * 移除群组成员
-     * @param uid 成员id
      * @param gid 群组id
+     * @param uid 成员id
      * @return 是否移除成功
      */
-    int deleteMember(String uid, String gid);
+    int deleteMember(String gid, String uid);
 
     /**
      * 通过用户id查询群组内成员
-     * @param uid 成员id
      * @param gid 群组id
+     * @param uid 成员id
      * @return User
      */
-    GroupMember queryMemberById(String uid, String gid);
+    GroupMember queryMemberById(String gid, String uid);
 
     /**
      * 查询群组所有成员

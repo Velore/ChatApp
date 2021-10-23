@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.czh.dao.ChatMsgMapper">
+
+    <resultMap id="ChatMsgMap" type="ChatMsg">
+        <id property="senderId" jdbcType="VARCHAR" column="sender_id"/>
+        <id property="gid" jdbcType="VARCHAR" column="gid"/>
+        <result property="sendTime" jdbcType="TIMESTAMP" column="send_time"/>
+        <result property="msgStr" jdbcType="VARCHAR" column="msg_str"/>
+    </resultMap>
+
+    <insert id="addChatMsg" parameterType="ChatMsg">
+        insert into chat_message(send_time, sender_id, gid, msg_str)values(#{sendTime}, #{senderId}, #{gid}, #{msgStr})
+    </insert>
+
+<!--    <delete id="deleteChatMsg" parameterType="ChatMsg">-->
+<!--        delete from chat_message where gid = #{gid}-->
+<!--    </delete>-->
+
+    <select id="queryChatMsgByGroupId" resultMap="ChatMsgMap">
+        select * from chat_message where gid = #{gid}
+    </select>
+
+    <select id="queryChatMsgBySenderIdAndGroupId" parameterType="String" resultMap="ChatMsgMap">
+        select * from chat_message where gid = #{arg0} and sender_id = #{arg1}
+    </select>
+
+    <select id="queryChatMsgLikeMsgStr" parameterType="String" resultMap="ChatMsgMap">
+        select * from chat_message where gid = #{arg0} and msg_str like concat('%', #{arg1}, '%')
+    </select>
+
+</mapper>

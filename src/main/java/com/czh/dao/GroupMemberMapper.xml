@@ -4,30 +4,30 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.czh.dao.GroupMemberMapper">
 
-    <resultMap id="MemberResultMap" type="com.czh.po.common.GroupMember">
+    <resultMap id="MemberMap" type="GroupMember">
         <id property="uid" jdbcType="VARCHAR" column="member_id"/>
         <id property="gid" jdbcType="VARCHAR" column="gid"/>
         <result property="memberAuth" jdbcType="VARCHAR" column="member_auth"/>
         <result property="joinTime" jdbcType="TIMESTAMP" column="join_time"/>
     </resultMap>
 
-    <insert id="addMember" parameterType="com.czh.po.common.GroupMember">
-        insert into group_member(member_id, gid) values (#{uid}, #{gid})
+    <insert id="addMember" parameterType="GroupMember">
+        insert into group_member(member_id, gid) values (#{#member_id}, #{gid})
     </insert>
 
     <delete id="deleteMember" parameterType="String">
-        delete from group_member where member_id = #{arg0} and gid = #{arg1}
+        delete from group_member where gid = #{arg0} and member_id = #{arg1}
     </delete>
     
-    <select id="queryMemberById" parameterType="String" resultType="com.czh.po.common.GroupMember">
-        select * from group_member where member_id = #{arg0} and gid = #{arg1}
+    <select id="queryMemberById" parameterType="String" resultType="GroupMember">
+        select * from group_member where gid = #{arg0} and member_id = #{arg1}
     </select>
 
-    <select id="queryAllMember" parameterType="String" resultType="com.czh.po.common.GroupMember">
+    <select id="queryAllMember" parameterType="String" resultType="GroupMember">
         select * from group_member where gid = #{gid}
     </select>
 
-    <select id="queryMemberLikeName" parameterType="String" resultType="com.czh.po.common.GroupMember">
+    <select id="queryMemberLikeName" parameterType="String" resultType="GroupMember">
         select * from group_member join chat_user cu on cu.user_name like concat('%', #{arg0}, '%') and gid = #{arg1}
     </select>
 

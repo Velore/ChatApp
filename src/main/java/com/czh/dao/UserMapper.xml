@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.czh.dao.UserMapper">
     
-    <resultMap id="UserResultMap" type="com.czh.po.common.User">
+    <resultMap id="UserResultMap" type="User">
         <id property="uid" jdbcType="VARCHAR" column="uid"/>
         <result property="name" jdbcType="VARCHAR" column="user_name"/>
         <result property="pwd" jdbcType="VARCHAR" column="pwd"/>
@@ -12,12 +12,12 @@
         <result property="lastOnlineTime" jdbcType="TIMESTAMP" column="last_online_time"/>
     </resultMap>
 
-    <insert id="addUser" parameterType="com.czh.po.common.User">
+    <insert id="addUser" parameterType="User">
         insert into chat_user(uid, user_name, pwd, register_time, last_online_time)
         values (#{uid}, #{name}, #{pwd}, #{registerTime}, #{lastOnlineTime})
     </insert>
 
-    <update id="updateUser" parameterType="com.czh.po.common.User">
+    <update id="updateUser" parameterType="User">
         update chat_user
         set user_name = #{name}, pwd = #{pwd}, register_time = #{registerTime}, last_online_time = #{lastOnlineTime}
         where uid = #{uid}
@@ -27,15 +27,15 @@
         delete from chat_user where uid = #{uid}
     </delete>
 
-    <select id="queryAllUser" resultType="com.czh.po.common.User" resultMap="UserResultMap">
+    <select id="queryAllUser" resultType="User" resultMap="UserResultMap">
         select * from chat_user
     </select>
     
-    <select id="queryUserById" resultType="com.czh.po.common.User" parameterType="String">
+    <select id="queryUserById" resultType="User" parameterType="String">
         select * from chat_user where uid = #{id}
     </select>
 
-    <select id="queryUserLikeName" resultType="com.czh.po.common.User" resultMap="UserResultMap">
+    <select id="queryUserLikeName" resultType="User" resultMap="UserResultMap">
         select * from chat_user where user_name like concat('%', #{name}, '%')
     </select>
     

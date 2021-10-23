@@ -1,6 +1,7 @@
 package com.czh.po.common.message;
 
 import com.czh.po.common.User;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -9,14 +10,13 @@ import java.time.LocalDateTime;
  * 登录后，客户端发送给服务器端需要更新的用户信息
  * @author chenzhuohong
  */
+@NoArgsConstructor
 public class UpdateMessage extends Message {
 
     private User updateUser;
 
-    public UpdateMessage(){}
-
     public UpdateMessage(User user){
-        this.sendTime = LocalDateTime.now();
+        this.setSendTime(LocalDateTime.now());
         this.setMsgType('u');
         this.updateUser = user;
     }
@@ -29,9 +29,9 @@ public class UpdateMessage extends Message {
     @Override
     public String toString() {
         return "UpdateMessage{" +
-                "loginBo=" + loginBo +
+                "SenderId=" + getSenderId() +
                 ", msgType=" + getMsgType() +
-                ", sendTime=" + sendTime +
+                ", sendTime=" + getSendTime() +
                 ", updateUser=" + updateUser +
                 '}';
     }

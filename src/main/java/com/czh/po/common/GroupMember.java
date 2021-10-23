@@ -20,16 +20,16 @@ public class GroupMember {
 
     private final LocalDateTime joinTime;
 
-    public GroupMember(String uid, String gid){
+    public GroupMember(String gid, String uid){
         this.uid = uid;
         this.gid = gid;
         this.memberAuth = "member";
         this.joinTime = LocalDateTime.now();
     }
 
-    public GroupMember(String uid, String gid, String memberAuth){
-        this.uid = uid;
+    public GroupMember(String gid, String uid, String memberAuth){
         this.gid = gid;
+        this.uid = uid;
         this.memberAuth = memberAuth;
         this.joinTime = LocalDateTime.now();
     }

@@ -4,42 +4,46 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.czh.dao.GroupMapper">
 
-    <resultMap id="GroupResultMap" type="com.czh.po.common.Group">
+    <resultMap id="GroupMap" type="Group">
         <id property="gid" jdbcType="VARCHAR" column="gid"/>
         <id property="ownerId" jdbcType="VARCHAR" column="owner_id"/>
         <result property="gName" jdbcType="VARCHAR" column="group_name"/>
         <result property="establishTime" jdbcType="TIMESTAMP" column="establish_time"/>
     </resultMap>
 
-    <insert id="addGroup" parameterType="com.czh.po.common.Group">
+    <insert id="addGroup" parameterType="Group">
         insert into chat_group(owner_id, gid, group_name, establish_time)
         values (#{ownerId}, #{gid}, #{gName}, #{establishTime})
     </insert>
 
-    <update id="updateGroup" parameterType="com.czh.po.common.Group">
+    <update id="updateGroup" parameterType="Group">
         update chat_group
         set owner_id = #{ownerId}, group_name = #{gName}, establish_time = #{establishTime}
         where gid = #{gid}
     </update>
 
     <delete id="deleteGroup" parameterType="String">
-        delete from chat_group where gid = #{gid}
+        delete from chat_group
+        where gid = #{gid}
     </delete>
 
-    <select id="queryGroupById" parameterType="String" resultMap="GroupResultMap">
-        select * from chat_group where gid = #{gid}
+    <select id="queryGroupById" parameterType="String" resultMap="GroupMap">
+        select * from chat_group
+        where gid = #{gid}
     </select>
 
-    <select id="queryGroupByOwnerId" parameterType="String" resultMap="GroupResultMap">
-        select * from chat_group where owner_id = #{uid}
+    <select id="queryGroupByOwnerId" parameterType="String" resultMap="GroupMap">
+        select * from chat_group
+        where owner_id = #{uid}
     </select>
 
-    <select id="queryAllGroup" resultType="com.czh.po.common.Group" resultMap="GroupResultMap">
+    <select id="queryAllGroup" resultType="Group" resultMap="GroupMap">
         select * from chat_group
     </select>
 
-    <select id="queryGroupLikeName" parameterType="String" resultMap="GroupResultMap">
-        select * from chat_group where group_name like concat('%', #{gName}, '%')
+    <select id="queryGroupLikeName" parameterType="String" resultMap="GroupMap">
+        select * from chat_group
+        where group_name like concat('%', #{gName}, '%')
     </select>
 
 </mapper>

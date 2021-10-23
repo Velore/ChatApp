@@ -2,6 +2,9 @@ package com.czh.po.common.message;
 
 import com.czh.bo.LoginBo;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -11,12 +14,15 @@ import java.time.LocalDateTime;
  * 子类包括
  * @author chenzhuohong
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class Message implements Serializable {
 
     /**
      * 发送信息的用户的登录信息
      */
-    public LoginBo loginBo;
+    private String senderId;
     /**
      * 消息的类型
      * c:客户端发送给服务器端，或者服务器端发送给客户端[新的聊天记录]，子类为ChatMessage
@@ -28,15 +34,7 @@ public class Message implements Serializable {
     /**
      * 消息发送的时间
      */
-    public LocalDateTime sendTime;
-
-    public char getMsgType(){
-        return this.msgType;
-    }
-
-    public void setMsgType(char c){
-        this.msgType = c;
-    }
+    private LocalDateTime sendTime;
 
     public Object getInfo(){
         return null;

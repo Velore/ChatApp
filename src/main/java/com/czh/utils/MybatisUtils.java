@@ -23,6 +23,10 @@ public class MybatisUtils {
         }
     }
 
+    /**
+     * 获取SqlSession
+     * @return SqlSession
+     */
     public static SqlSession getSqlSession(){
         return sqlSessionFactory.openSession();
     }
