@@ -18,7 +18,7 @@
 
     <update id="updateGroup" parameterType="Group">
         update chat_group
-        set owner_id = #{ownerId}, group_name = #{gName}, establish_time = #{establishTime}
+        set group_name = #{gName}
         where gid = #{gid}
     </update>
 

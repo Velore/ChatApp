@@ -6,19 +6,11 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
- * 用户类
- * 内置用户信息如下
- * 帐号 姓名 密码 所在群组列表 好友列表
- * uid name pwd groupList friendList
- * u1 t1 p1 [10001,12345] [u2,u3]
- * u2 n2 p2 [10001] [u1,u6]
- * u3 n3 p3 [10001] [u1]
- * u4 n4 p4 [10001, 10002] []
- * u5 n5 p5 [10002] []
- * u6 n6 p6 [12345] [u2]
+ * 用户实体类
  * @author chenzhuohong
  */
 @Getter
@@ -66,6 +58,12 @@ public class User implements Serializable {
         this.lastOnlineTime = this.registerTime;
     }
 
+    /**
+     * 自定义id,名字和密码
+     * @param uid 帐号id
+     * @param name 名字
+     * @param pwd 密码
+     */
     public User(String uid, String name, String pwd){
         this.uid = uid;
         this.name = name;
@@ -75,7 +73,8 @@ public class User implements Serializable {
     }
 
     /**
-     * 用户名初始化为账号
+     * 用户名初始化为id
+     * id为随机生成的5位字符
      * @param pwd 密码
      */
     public User(String pwd){
@@ -88,6 +87,7 @@ public class User implements Serializable {
 
     /**
      * 用户名自定义
+     * 帐号为随机生成的5位字符
      * @param name 用户名
      * @param pwd 密码
      */
@@ -105,8 +105,8 @@ public class User implements Serializable {
                 "uid='" + uid + '\'' +
                 ", name='" + name + '\'' +
                 ", pwd='" + pwd + '\'' +
-                ", registerTime='" + registerTime.toString() + '\'' +
-                ", lastOnlineTime='" + lastOnlineTime.toString() + '\'' +
+                ", registerTime='" + registerTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + '\'' +
+                ", lastOnlineTime='" + lastOnlineTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + '\'' +
                 '}';
     }
 

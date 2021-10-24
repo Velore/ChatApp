@@ -44,11 +44,11 @@ public class GroupMemberTest {
     }
 
     @Test
-    public void queryAllMemberTest(){
+    public void queryAllMemberByGroupIdTest(){
         SqlSession sqlSession = MybatisUtils.getSqlSession();
         try{
             GroupMemberMapper memberMapper = sqlSession.getMapper(GroupMemberMapper.class);
-            List<GroupMember> memberList = memberMapper.queryAllMember("10001");
+            List<GroupMember> memberList = memberMapper.queryAllMemberByGroupId("10001");
 
             for(GroupMember gm : memberList){
                 System.out.println(gm.toString());

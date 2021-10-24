@@ -1,11 +1,20 @@
 package com.czh.bo;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 /**
  * 用户登录凭证
  * @author chenzhuohong
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginBo implements Serializable {
 
     /**
@@ -13,27 +22,11 @@ public class LoginBo implements Serializable {
      */
     private String loginUid;
 
-    public LoginBo(String loginUid) {
-        this.loginUid = loginUid;
-    }
-
-    public LoginBo() {
-
-    }
-
     @Override
     public String toString() {
         return "LoginBo{" +
                 "loginUid='" + loginUid + '\'' +
                 '}';
-    }
-
-    public String getLoginUid() {
-        return loginUid;
-    }
-
-    public void setLoginUid(String loginUid) {
-        this.loginUid = loginUid;
     }
 
 }

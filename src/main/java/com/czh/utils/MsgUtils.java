@@ -1,11 +1,10 @@
 package com.czh.utils;
 
-import com.czh.bo.LoginBo;
+import com.czh.po.common.User;
 import com.czh.po.common.message.ChatMessage;
 import com.czh.po.common.message.InfoMessage;
 import com.czh.po.common.message.Message;
 import com.czh.po.common.message.UpdateMessage;
-import com.czh.po.common.User;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -77,18 +76,13 @@ public class MsgUtils {
                         userTemp.setPwd(prevMsg.get(i+1));
                         break;
                     case "addg":
-                        //若群组存在，则申请进入群组；若群组不存在，则新建聊天组
-                        userTemp.getGroupList().add(prevMsg.get(i+1));
+                        //若群组存在，则申请进入群组
                         break;
                     case "addf":
-                        //新增好友
-                        //目前只对好友做了重复添加判断和不能添加自己为好友的判断
-                        userTemp.addFriend(prevMsg.get(i+1));
+                        //新增关注
                         break;
                     case "delf":
-                        //删除好友
-                        //这个目前没有实现，或者说该方法有问题
-                        userTemp.delFriend(prevMsg.get(i+1));
+                        //取消关注
                         break;
                     default:
                         System.out.println("未识别的参数"+prevMsg.get(i));
@@ -142,6 +136,7 @@ public class MsgUtils {
 
     /**
      * 将聊天记录的对象转换为可输出的字符串
+     * @deprecated
      * @param chatMsgList 聊天记录的列表
      * @return 字符串列表
      */
@@ -155,6 +150,7 @@ public class MsgUtils {
 
     /**
      * 将字符串转换为聊天记录的对象，用于从文件中读取聊天记录时
+     * @deprecated
      * @param s 要转换的字符串
      * @param pattern 正则表达式的匹配规则，一般用MsgUtils自带的静态规则匹配即可
      * @return 聊天记录的对象
@@ -164,9 +160,8 @@ public class MsgUtils {
         cm.setMsgType('c');
         ArrayList<String> strList = MsgUtils.inputSplit(s);
         cm.setGid(strList.get(0));
-        cm.sendTime = LocalDateTime.parse(strList.get(1), DATE_TIME_FORMATTER);
-        cm.loginBo = new LoginBo();
-        cm.loginBo.setLoginUid(strList.get(2));
+        cm.setSendTime(LocalDateTime.parse(strList.get(1), DATE_TIME_FORMATTER));
+        cm.setSenderId(strList.get(2));
         cm.setMsgStr(strList.get(3));
         return cm;
     }

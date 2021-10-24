@@ -11,11 +11,6 @@ import java.time.LocalDateTime;
  * 群组本身不记录用户状态
  * - 两人单独聊天的群组：用户列表只有两人
  * - 多人聊天的群组，用户列表包含多人
- * 内置聊天群组如下
- * gid memberList
- * 10001 [u1,u2,u3,u4]
- * 10002 [u4,u5]
- * 12345 [u1,u6]
  * @author chenzhuohong
  */
 @Getter
@@ -53,11 +48,20 @@ public class Group implements Serializable {
      */
     private final LocalDateTime establishTime;
 
+    /**
+     * 随机生成群组id
+     * 未确认群主
+     */
     public Group(){
         this.gid = RandomUtils.mixString(GID_LENGTH);
         this.establishTime = LocalDateTime.now();
     }
 
+    /**
+     * 自定义群组id
+     * @param gid 群组id
+     * @param uid 群主id
+     */
     public Group(String gid, String uid){
         this.gid = gid;
         this.gName = gid;
@@ -65,6 +69,10 @@ public class Group implements Serializable {
         this.establishTime = LocalDateTime.now();
     }
 
+    /**
+     * 随机生成群组id
+     * @param uid 群主id
+     */
     public Group(String uid) {
         this.gid = RandomUtils.mixString(GID_LENGTH);
         this.ownerId = uid;

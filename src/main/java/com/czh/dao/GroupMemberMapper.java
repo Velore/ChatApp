@@ -37,13 +37,13 @@ public interface GroupMemberMapper {
      * @param gid 群组id
      * @return 成员List
      */
-    List<GroupMember> queryAllMember(String gid);
+    List<GroupMember> queryAllMemberByGroupId(String gid);
 
     /**
      * 通过名字模糊查询群组成员
-     * @param name 名字
      * @param gid 群组id
+     * @param name 名字
      * @return 成员list
      */
-    List<GroupMember> queryMemberLikeName(String name, String gid);
+    List<GroupMember> queryMemberLikeName(String gid, String name);
 }

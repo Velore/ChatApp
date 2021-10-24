@@ -1,10 +1,11 @@
 package com.czh.po.client;
 
 import com.czh.bo.LoginBo;
+import com.czh.po.common.message.ChatMessage;
 import com.czh.po.common.message.StatusMessage;
 import com.czh.po.common.message.UpdateMessage;
+import com.czh.service.UserService;
 import com.czh.utils.MsgUtils;
-import com.czh.utils.UserUtils;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -32,15 +33,15 @@ public class OutputThread extends Thread{
         try{
             // 不断输入帐号和密码，直至服务器端传过来了一个loginBo，代表登录成功
             do{
-                ot.client.user = UserUtils.userLogin();
+                ot.client.user = UserService.userLogin();
                 ot.client.outputMsg = new UpdateMessage(ot.client.user);
                 //发送登录信息
                 oos.writeObject(ot.client.outputMsg);
                 oos.flush();
                 synchronized (this){
-                    ot.wait(100);
+                    this.wait(2000);
                 }
-            }while(ot.client.inputMsg.loginBo==null);
+            }while(ot.client.inputMsg.getLoginBo()==null);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -59,7 +60,12 @@ public class OutputThread extends Thread{
                     System.out.println("输入分析失败");
                 }else{
                     //在交互对象中加入登录信息
-                    client.outputMsg.loginBo = client.loginBo;
+                    client.outputMsg.setLoginBo(client.loginBo);
+                    //如果是聊天信息, 就加入发送者信息
+                    if(client.outputMsg.getMsgType()=='c'){
+                        ChatMessage message = (ChatMessage) client.outputMsg;
+                        message.setSenderId(message.getLoginBo().getLoginUid());
+                    }
                     //发送登录信息给服务器端进行登录验证
                     oos.writeObject(client.outputMsg);
                     oos.flush();
@@ -67,7 +73,7 @@ public class OutputThread extends Thread{
                 }
             }else {
                 //客户端发送注销信息后离线
-                //但是这是输入线程还未停止，需要修改
+                //但是这时输入线程还未停止，需要修改
                 oos.writeObject(new StatusMessage(client.loginBo));
                 oos.flush();
                 oos.reset();
@@ -85,7 +91,7 @@ public class OutputThread extends Thread{
         try {
             ObjectOutputStream oos = new ObjectOutputStream(this.client.socket.getOutputStream());
             //获取接收到的登录信息
-            this.client.outputMsg.loginBo = signIn(this, oos);
+            this.client.outputMsg.setLoginBo(signIn(this, oos));
             while (!this.client.socket.isClosed()){
                 //客户端输入
                 do {

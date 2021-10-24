@@ -1,33 +1,35 @@
 package com.czh.po.common;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * 返回信息的类
- * 目前暂时用不上，只是新建放在这里
  * @author chenzhuohong
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReturnInfo {
 
     /**
      * 状态码
      */
-    public enum StatusCode{
-        /**
-         * 错误代码 1
-         */
-        ERROR_CODE,
-        /**
-         * 没有找到对应信息的代码 -1
-         */
-        NOT_FOUND_CODE,
-        /**
-         * 权限不足的代码 -2
-         */
-        NO_PERMISSION_CODE
-    }
+    private StatusCode statusCode;
 
     /**
-     * 返回信息的简述
+     * 返回信息
      */
-    public String briefInfo;
+    private String briefInfo;
 
+    @Override
+    public String toString() {
+        return "ReturnInfo{" +
+                "statusCode=" + statusCode +
+                ", briefInfo='" + briefInfo + '\'' +
+                '}';
+    }
 }

@@ -37,7 +37,7 @@ public interface ChatMsgMapper {
      * @param senderId 发送者id
      * @return 聊天信息list
      */
-    List<ChatMessage> queryChatMsgBySenderIdAndGroupId(String gid, String senderId);
+    List<ChatMessage> queryChatMsgByGroupIdAndSenderId(String gid, String senderId);
 
     /**
      * 通过聊天信息部分str模糊查询聊天信息

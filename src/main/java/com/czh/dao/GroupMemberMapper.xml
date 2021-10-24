@@ -19,16 +19,16 @@
         delete from group_member where gid = #{arg0} and member_id = #{arg1}
     </delete>
     
-    <select id="queryMemberById" parameterType="String" resultType="GroupMember">
+    <select id="queryMemberById" parameterType="String" resultMap="MemberMap">
         select * from group_member where gid = #{arg0} and member_id = #{arg1}
     </select>
 
-    <select id="queryAllMember" parameterType="String" resultType="GroupMember">
+    <select id="queryAllMemberByGroupId" parameterType="String" resultMap="MemberMap">
         select * from group_member where gid = #{gid}
     </select>
 
-    <select id="queryMemberLikeName" parameterType="String" resultType="GroupMember">
-        select * from group_member join chat_user cu on cu.user_name like concat('%', #{arg0}, '%') and gid = #{arg1}
+    <select id="queryMemberLikeName" parameterType="String" resultMap="MemberMap">
+        select * from group_member join chat_user cu on cu.user_name like concat('%', #{arg1}, '%') and gid = #{arg0}
     </select>
 
 </mapper>

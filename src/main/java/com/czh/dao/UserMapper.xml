@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.czh.dao.UserMapper">
     
-    <resultMap id="UserResultMap" type="User">
+    <resultMap id="UserMap" type="User">
         <id property="uid" jdbcType="VARCHAR" column="uid"/>
         <result property="name" jdbcType="VARCHAR" column="user_name"/>
         <result property="pwd" jdbcType="VARCHAR" column="pwd"/>
@@ -27,15 +27,15 @@
         delete from chat_user where uid = #{uid}
     </delete>
 
-    <select id="queryAllUser" resultType="User" resultMap="UserResultMap">
+    <select id="queryAllUser" resultType="User" resultMap="UserMap">
         select * from chat_user
     </select>
     
-    <select id="queryUserById" resultType="User" parameterType="String">
+    <select id="queryUserById" resultMap="UserMap" parameterType="String">
         select * from chat_user where uid = #{id}
     </select>
 
-    <select id="queryUserLikeName" resultType="User" resultMap="UserResultMap">
+    <select id="queryUserLikeName" resultType="User" resultMap="UserMap">
         select * from chat_user where user_name like concat('%', #{name}, '%')
     </select>
     

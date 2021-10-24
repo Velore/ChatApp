@@ -30,6 +30,7 @@ public class InfoMessage extends Message{
      * 若infoType是c，specType内存放群组gid(唯一)，代表查询聊天信息
      */
     private ArrayList<String> specType;
+
     /**
      * 服务器端向客户端响应的信息列表（用户信息 或 群组信息 或 聊天信息）
      */
@@ -73,7 +74,7 @@ public class InfoMessage extends Message{
                 "infoType=" + infoType +
                 ", specType=" + specType +
                 ", infoList=" + infoList +
-                ", senderId=" + getSenderId() +
+                ", loginBo=" + getLoginBo() +
                 ", msgType=" + getMsgType() +
                 ", sendTime=" + getSendTime() +
                 '}';

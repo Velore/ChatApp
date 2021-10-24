@@ -23,7 +23,7 @@
         select * from chat_message where gid = #{gid}
     </select>
 
-    <select id="queryChatMsgBySenderIdAndGroupId" parameterType="String" resultMap="ChatMsgMap">
+    <select id="queryChatMsgByGroupIdAndSenderId" parameterType="String" resultMap="ChatMsgMap">
         select * from chat_message where gid = #{arg0} and sender_id = #{arg1}
     </select>
 

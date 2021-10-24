@@ -20,9 +20,11 @@ import java.time.LocalDateTime;
 public class Message implements Serializable {
 
     /**
-     * 发送信息的用户的登录信息
+     * 发送信息的用户的登录凭证
+     * 只用作服务器端确认身份
      */
-    private String senderId;
+    private LoginBo loginBo;
+
     /**
      * 消息的类型
      * c:客户端发送给服务器端，或者服务器端发送给客户端[新的聊天记录]，子类为ChatMessage

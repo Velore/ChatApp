@@ -1,6 +1,5 @@
 package com.czh.po.common.message;
 
-import com.czh.bo.LoginBo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +17,11 @@ import java.time.format.DateTimeFormatter;
 @Setter
 @NoArgsConstructor
 public class ChatMessage extends Message {
+
+    /**
+     * 发送信息的用户id
+     */
+    private String senderId;
 
     private String gid;
 

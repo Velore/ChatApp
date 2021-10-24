@@ -31,7 +31,7 @@ public class ChatMsgTest {
     @Test
     public void queryChatMsgByGroupIdAndSenderIdTest(){
         ChatMsgMapper mapper = MybatisUtils.getSqlSession().getMapper(ChatMsgMapper.class);
-        List<ChatMessage> msgList = mapper.queryChatMsgBySenderIdAndGroupId("10001", "u1");
+        List<ChatMessage> msgList = mapper.queryChatMsgByGroupIdAndSenderId("10001", "u1");
         for(ChatMessage message : msgList){
             System.out.println(message);
         }

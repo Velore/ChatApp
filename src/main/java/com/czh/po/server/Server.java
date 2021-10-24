@@ -51,10 +51,10 @@ public class Server extends Thread{
     public Server(int port){
         System.out.println("服务器启动中");
         //初始化列表
-        userList = new ArrayList<>();
+//        userList = new ArrayList<>();
         loginList = new ArrayList<>();
-        groupList = new ArrayList<>();
-        initList();
+//        groupList = new ArrayList<>();
+//        initList();
         threadList = new ArrayList<>();
         try{
             this.serverSocket = new ServerSocket(port);
@@ -65,6 +65,7 @@ public class Server extends Thread{
 
     /**
      * 将文件中的信息加载到列表中
+     * @deprecated
      */
     public static void initList(){
         System.out.println("准备加载持久化文件");
@@ -81,7 +82,7 @@ public class Server extends Thread{
         for(Group g : groupList){
             for(ChatMessage cm : msgTmp){
                 if(cm.getGid().equals(g.getGid())){
-                    g.addMsg(cm);
+//                    g.addMsg(cm);
                 }
             }
         }

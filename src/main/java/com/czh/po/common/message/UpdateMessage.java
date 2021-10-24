@@ -29,7 +29,7 @@ public class UpdateMessage extends Message {
     @Override
     public String toString() {
         return "UpdateMessage{" +
-                "SenderId=" + getSenderId() +
+                "loginBo=" + getLoginBo() +
                 ", msgType=" + getMsgType() +
                 ", sendTime=" + getSendTime() +
                 ", updateUser=" + updateUser +

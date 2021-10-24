@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * 持久化工具类
  * 包括从文件中读取数据read，将数据写入文件write
  * 因为持久化形式的不同，聊天记录用单独的readMsg和writeMsg
+ * @deprecated
  * @author chenzhuohong
  */
 public class StorageUtils {
@@ -102,8 +103,8 @@ public class StorageUtils {
         try{
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file, true), StandardCharsets.UTF_8);
             writer.write(cm.getGid()+"\t");
-            writer.write(cm.sendTime.format(MsgUtils.DATE_TIME_FORMATTER)+"\t");
-            writer.write(cm.loginBo.getLoginUid()+"\t");
+            writer.write(cm.getSendTime().format(MsgUtils.DATE_TIME_FORMATTER)+"\t");
+            writer.write(cm.getSenderId()+"\t");
             writer.write(cm.getInfo());
             writer.write("\n");
             writer.flush();
