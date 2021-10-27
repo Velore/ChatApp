@@ -1,6 +1,8 @@
 package com.czh.po.server;
 
 import com.czh.bo.LoginBo;
+import com.czh.po.common.ReturnInfo;
+import com.czh.po.common.StatusCode;
 import com.czh.po.common.message.Message;
 import com.czh.service.MsgService;
 import lombok.Getter;
@@ -9,6 +11,8 @@ import lombok.Setter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.concurrent.Callable;
 
 /**
  * 服务器端为每一个连接的客户端新建一个处理线程ServerThread
@@ -17,7 +21,7 @@ import java.net.Socket;
  */
 @Getter
 @Setter
-public class ServerThread extends Thread{
+public class ServerThread implements Callable<ReturnInfo>{
 
     private final Socket socket;
 
@@ -31,10 +35,6 @@ public class ServerThread extends Thread{
         return this.loginBo.getLoginUid();
     }
 
-    public ObjectOutputStream getOutput(){
-        return this.output;
-    }
-
     public ServerThread(Socket socket) {
         this.socket = socket;
         try{
@@ -46,7 +46,8 @@ public class ServerThread extends Thread{
     }
 
     @Override
-    public void run() {
+    public ReturnInfo call() {
+        System.out.println(this+"开始运行");
         try{
             while(!this.socket.isClosed()){
                 Message msgTemp = (Message) this.input.readObject();
@@ -54,7 +55,14 @@ public class ServerThread extends Thread{
             }
         }catch (Exception e){
             e.printStackTrace();
-//            System.out.println("线程异常");
+            return new ReturnInfo(StatusCode.ERROR_CODE, Arrays.toString(e.getStackTrace()));
         }
+        return new ReturnInfo(StatusCode.SUCCESS_CODE, "线程运行结束");
     }
+}
+
+class ServerRunner extends Thread{
+
+    public 
+
 }
