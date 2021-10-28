@@ -1,7 +1,6 @@
 package com.czh.po.common.message;
 
 import com.czh.bo.LoginBo;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,7 +31,7 @@ public class Message implements Serializable {
      * s:服务器端发送登录信息给客户端，或客户端注销时向服务器端发送，子类为StatusMessage
      * i:客户端查询信息，服务器端返回查询结果，子类为InfoMessage
      */
-    private char msgType;
+    private MessageType msgType;
     /**
      * 消息发送的时间
      */

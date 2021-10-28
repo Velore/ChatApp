@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 客户端登录时发送一个只包含帐号和密码的用户信息
- * 登录后，客户端发送给服务器端需要更新的用户信息
+ * 客户端登录时发送一个只包含帐号和密码的用户信息;
+ * 登录后，客户端发送给服务器端需要更新的用户信息;
  * @author chenzhuohong
  */
 @NoArgsConstructor
@@ -17,7 +17,7 @@ public class UpdateMessage extends Message {
 
     public UpdateMessage(User user){
         this.setSendTime(LocalDateTime.now());
-        this.setMsgType('u');
+        this.setMsgType(MessageType.UPDATE_TYPE);
         this.updateUser = user;
     }
 

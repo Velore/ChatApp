@@ -46,7 +46,7 @@ public class User implements Serializable {
     /**
      * 注册时间
      */
-    private final LocalDateTime registerTime;
+    private LocalDateTime registerTime;
 
     /**
      * 最后登录时间

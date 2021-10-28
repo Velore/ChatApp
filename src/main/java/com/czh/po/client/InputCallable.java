@@ -22,9 +22,10 @@ public class InputThread extends Thread{
 
     @Override
     public void run() {
+        ObjectInputStream ois = null;
         try {
 //            连接到的socket->字节流->对象输入流
-            ObjectInputStream ois = new ObjectInputStream(this.client.socket.getInputStream());
+            ois = new ObjectInputStream(this.client.socket.getInputStream());
             while(!this.client.socket.isClosed()) {
                 if(this.client.socket.getInputStream()!=null){
 //                    读取服务器端传递的交互对象
@@ -37,6 +38,14 @@ public class InputThread extends Thread{
             ois.close();
         } catch (EOFException e){
             System.out.println("EOF ending");
+            try{
+                if(ois!=null){
+                    ois.close();
+                }
+                System.exit(0);
+            }catch (Exception e1){
+                e.printStackTrace();
+            }
         } catch (IOException |ClassNotFoundException e){
             e.printStackTrace();
         }

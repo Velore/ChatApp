@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * 在客户端和服务器端之间传递的聊天信息
- * 客户端发送给服务器
- * 服务器再发送给其他的客户端
+ * 在客户端和服务器端之间传递的聊天信息;
+ * 客户端发送给服务器;
+ * 服务器再发送给其他的客户端;
  * @author chenzhuohong
  */
 @Getter
@@ -30,7 +30,7 @@ public class ChatMessage extends Message {
     public ChatMessage(String gid, String msgStr) {
         this.setSendTime(LocalDateTime.now());
         this.gid = gid;
-        this.setMsgType('c');
+        this.setMsgType(MessageType.CHAT_TYPE);
         this.msgStr = msgStr;
     }
 
