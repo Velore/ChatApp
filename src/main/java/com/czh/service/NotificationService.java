@@ -1,9 +1,8 @@
 package com.czh.service;
 
-import com.czh.po.common.User;
 import com.czh.po.common.message.InfoMessage;
 import com.czh.po.server.Server;
-import com.czh.po.server.ServerThread;
+import com.czh.po.server.ServerCallable;
 
 /**
  * 通知服务
@@ -13,17 +12,23 @@ public class NotificationService {
 
     /**
      * 用户登录或注销时发送的通知
+     * @param uid 登录或注销的用户uid
+     * @param status 状态：登录/注销
      */
-    public static void notifyUserStatus(ServerThread serverThread, User user){
+    public static void notifyUserStatus(String uid, String status){
         try{
             //向在线用户广播某用户已上线
-            for(ServerThread st : Server.threadList){
-                if(!st.getLoginBo().equals(serverThread.getLoginBo())){
-                    st.getOutput().writeObject(new InfoMessage(user.getUid()+"已上线"));
+            for(ServerCallable st : Server.threadList){
+                if(!st.getUid().equals(uid)){
+                    st.getOutput().writeObject(new InfoMessage(uid+status));
                 }
             }
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public static void notifyFollower(){
+
     }
 }

@@ -25,12 +25,17 @@ public class UserService {
      */
     public static User userRegister(){
         Scanner in = new Scanner(System.in);
+        User newUser;
         System.out.println("请输入名字");
         String name = in.nextLine();
         System.out.println("请输入密码");
         String pwd = in.nextLine();
-        System.out.println("用户注册成功，等待系统生成注册信息");
-        return new User(name, pwd);
+        System.out.println("信息填写完成, 等待系统生成注册信息");
+        do{
+            newUser = new User(name, pwd);
+        }while (UserService.isNewUser(newUser.getUid()));
+        System.out.println("注册信息生成完毕, 等待系统确认");
+        return newUser;
     }
 
     /**
@@ -68,31 +73,15 @@ public class UserService {
     }
 
     /**
-     * 添加关注
-     * @param uid 要关注的帐号
-     * @param loginBo 登录凭证
-     */
-    public static void addAttention(String uid, LoginBo loginBo){
-    }
-
-    /**
-     * 取消关注
-     * @param uid 要取消关注的帐号
-     * @param loginBo 登录凭证
-     */
-    public static void deleteAttention(String uid, LoginBo loginBo){
-    }
-
-    /**
      * 查询某用户是否在线
-     * @param user 查询用户
+     * @param uid 查询用户uid
      * @param loginList 在线列表
      * @return 查询结果，在线返回true，离线返回false
      */
-    public static boolean userOnline(User user, ArrayList<LoginBo> loginList){
+    public static boolean userOnline(String uid, ArrayList<LoginBo> loginList){
         if(!loginList.isEmpty()){
             for(LoginBo l : loginList){
-                if(user.getUid().equals(l.getLoginUid())){
+                if(uid.equals(l.getLoginUid())){
                     return true;
                 }
             }
@@ -124,6 +113,17 @@ public class UserService {
      * @param loginBo 更新信息需要先登录
      */
     public static ReturnInfo updateUser(User user, LoginBo loginBo){
+        //查询修改之前的用户信息并对比修改的地方
+        User oldUser = UserService.queryUserById(loginBo.getLoginUid());
+        user.setUid(oldUser.getUid());
+        if(user.getName()==null){
+            user.setName(oldUser.getName());
+        }
+        if(user.getPwd()==null){
+            user.setPwd(oldUser.getPwd());
+        }
+        user.setRegisterTime(oldUser.getRegisterTime());
+        //准备修改用户信息
         if(!user.getUid().equals(loginBo.getLoginUid())){
             return new ReturnInfo(StatusCode.NO_PERMISSION_CODE, "没有更改权限");
         }

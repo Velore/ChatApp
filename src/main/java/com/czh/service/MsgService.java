@@ -2,69 +2,47 @@ package com.czh.service;
 
 import com.czh.bo.LoginBo;
 import com.czh.po.client.Client;
-import com.czh.po.common.*;
+import com.czh.po.common.Group;
+import com.czh.po.common.StatusCode;
+import com.czh.po.common.User;
 import com.czh.po.common.message.ChatMessage;
 import com.czh.po.common.message.InfoMessage;
 import com.czh.po.common.message.Message;
 import com.czh.po.common.message.StatusMessage;
 import com.czh.po.server.Server;
-import com.czh.po.server.ServerThread;
+import com.czh.po.server.ServerCallable;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 消息
+ * 处理消息的服务
  * @author chenzhuohong
  */
 public class MsgService {
 
     /**
-     * 向群组内在线成员发送信息
-     * @param msg 要发送的信息
-     * @return 发送的结果：
+     * 服务器端接收到客户端发送的注销Message后
+     * 发送带有该uid的LoginBo给客户端表示服务器端收到注销信息
      */
-    public static ReturnInfo sendChatMsg(ChatMessage msg){
-        try{
-            //所有的群组成员, 无论是否在线
-            List<String> memberList = GroupMemberService
-                    .queryAllMemberByGroupId(msg.getGid())
-                    .stream()
-                    .map(GroupMember::getUid)
-                    .collect(Collectors.toList());
-            for(ServerThread st : Server.threadList){
-                //只有带有LoginBo的serverThread才是已登录的
-                if(st.getLoginBo()!=null){
-                    for(String s : memberList){
-                        if(st.getLoginBo().getLoginUid().equals(s)){
-                            System.out.println("成员"+s+"在线");
-                            st.getOutput().writeObject(msg);
-                        }
-                    }
-                }
-            }
-            return new ReturnInfo(StatusCode.SUCCESS_CODE, "发送信息成功");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return new ReturnInfo(StatusCode.ERROR_CODE, "发送信息失败");
-    }
+    public static String SIGN_OUT_UID = "0000";
 
     /**
-     * 客户端处理消息
+     * 客户端处理接收到的Message;
      * @param client 客户端
      */
     public static void handleMsg(Client client){
+        System.out.println("接收到服务器消息,类型为"+client.inputMsg.getMsgType());
         switch (client.inputMsg.getMsgType()){
-            case 's':
+            case STATUS_TYPE:
                 //登录时loginBo为null
                 if(client.loginBo==null){
                     //接收到服务器发送的登录信息，传递给Client，Client再传递给输出线程
                     client.loginBo = client.inputMsg.getLoginBo();
                     System.out.println("登录信息" + client.loginBo);
-                }else if("0000".equals(client.loginBo.getLoginUid())){
+                }else if(SIGN_OUT_UID.equals(client.loginBo.getLoginUid())){
                     try{
                         client.socket.close();
                     }catch (Exception e){
@@ -72,11 +50,11 @@ public class MsgService {
                     }
                 }
                 break;
-            case 'c':
+            case CHAT_TYPE:
                 //接收到聊天信息，输出在屏幕上，输出格式：[群组gid](发送时间)成员uid:{聊天内容}
                 System.out.println(client.inputMsg);
                 break;
-            case 'i':
+            case INFO_TYPE:
                 //输出用户信息，群组信息，或群组的聊天信息，或者通知信息
                 InfoMessage im = (InfoMessage) client.inputMsg;
                 for(String s : im.getInfo()){
@@ -88,24 +66,24 @@ public class MsgService {
         }
     }
 
-
     /**
-     * 服务器处理接收到的msg
+     * 服务器处理接收到的Message;
      * @param msg 接收的msg
      */
-    public static void handleMsg(ServerThread serverThread, Message msg){
+    public static void handleMsg(ServerCallable serverCallable, Message msg){
+        System.out.println("接收到客户端["+msg.getLoginBo()+"]消息,类型:"+msg.getMsgType());
         switch (msg.getMsgType()) {
-            case 's':
-                handleStatusMsg(serverThread, msg);
+            case STATUS_TYPE:
+                handleStatusMsg(serverCallable, msg);
                 break;
-            case 'u':
-                handleUpdateMsg(serverThread, msg);
+            case UPDATE_TYPE:
+                handleUpdateMsg(serverCallable, msg);
                 break;
-            case 'c':
-                handleChatMsg(serverThread, msg);
+            case CHAT_TYPE:
+                handleChatMsg(serverCallable, msg);
                 break;
-            case 'i':
-                handleInfoMsg(serverThread, msg);
+            case INFO_TYPE:
+                handleInfoMsg(serverCallable, msg);
                 break;
             default:
                 System.out.println("msgType无效:" + msg.getMsgType());
@@ -113,13 +91,11 @@ public class MsgService {
     }
 
     /**
-     * 处理状态信息，如注销
+     * 处理状态信息，如注销;
      * @param thread 要处理的服务器线程
      * @param msg 要处理的状态信息
      */
-    private static void handleStatusMsg(ServerThread thread, Message msg){
-        //移除本次登录信息
-        Server.loginList.removeIf(loginBo -> msg.getLoginBo().equals(loginBo));
+    private static void handleStatusMsg(ServerCallable thread, Message msg){
         try {
             //通知客户端，注销信息服务器端接收成功，准备注销
             thread.getOutput().writeObject(new StatusMessage(new LoginBo("0000")));
@@ -135,50 +111,63 @@ public class MsgService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println();
         System.out.println("用户"+thread.getLoginBo().getLoginUid()+"注销");
+        //移除本次登录信息
+        Server.loginList.removeIf(loginBo -> msg.getLoginBo().equals(loginBo));
+        Server.threadList.removeIf(serverCallable -> serverCallable.getSocket().isClosed());
         System.out.println(Server.loginList.toString());
         //通知注销用户的好友，该用户已下线
+        NotificationService.notifyUserStatus(thread.getUid(), "已注销");
     }
 
     /**
-     * 服务器端处理用户信息，如更新密码等
-     * @param serverThread 要处理的服务器线程
+     * 服务器端处理用户信息，如更新密码等;
+     * @param thread 要处理的服务器线程
      * @param msg 要处理的用户信息
      */
-    private static void handleUpdateMsg(ServerThread serverThread, Message msg){
+    private static void handleUpdateMsg(ServerCallable thread, Message msg){
         try{
             User user = (User) msg.getInfo();
             System.out.println(user);
-            //客户端修改用户信息
-            if(UserService.userOnline(user, Server.loginList)){
-                //防止同一用户在不同客户端登录造成修改用户信息的错误情况
-                System.out.println("serverThread:"+serverThread.getLoginBo());
-                System.out.println("msg:"+msg.getLoginBo());
-                if(serverThread.getLoginBo().getLoginUid().equals(msg.getLoginBo().getLoginUid())){
-                    serverThread.getOutput().writeObject(
-                            new InfoMessage(
-                                    UserService.updateUser(user, msg.getLoginBo()).getBriefInfo()));
-                }else{
-                    System.out.println("帐号"+user.getUid()+"重复登录");
-                }
-            }else{
+            //msg的loginBo为空,还没登录
+            if(msg.getLoginBo()==null){
+                //服务器端 -> 验证客户端的登录信息, 若信息正确则生成登录凭证
                 LoginBo loginBo = UserService.userLoginConfirm(user);
-                //客户端登录,新建对应的登录凭证
-                if(loginBo!=null){
+                if(loginBo==null){
+                    //loginBo为空说明帐号或密码错误
+                    System.out.println(thread.getSocket()+", 登录:帐号或密码错误");
+                    thread.getOutput().writeObject(new InfoMessage("帐号或密码错误"));
+                } else if(UserService.userOnline(user.getUid(), Server.loginList)){
+                    //若该用户已登录，则返回重复登录
+                    //防止同一用户在不同客户端登录可能造成修改用户信息的错误情况
+                    System.out.println(thread.getSocket()+", 帐号"+user.getUid()+"重复登录");
+                    thread.getOutput().writeObject(new InfoMessage("帐号"+user.getUid()+"重复登录"));
+                }else{
+                    //更新用户最新登录时间
+                    UserService.updateUser(new User(), loginBo);
                     //给自己带上登录凭证
-                    serverThread.setLoginBo(loginBo);
+                    thread.setLoginBo(loginBo);
                     //将登录凭证加入服务器登录列表
                     Server.loginList.add(loginBo);
                     //将登录凭证传给客户端
-                    serverThread.getOutput().writeObject(new StatusMessage(loginBo));
+                    thread.getOutput().writeObject(new StatusMessage(loginBo));
                     System.out.println("登录凭证["+loginBo+"]已发送,目前User在线数量:"+Server.loginList.size());
+                    System.out.print("登录用户：");
                     for(LoginBo l : Server.loginList){
-                        System.out.println("登录用户Uid[" +l.getLoginUid()+"]\n");
+                        System.out.print("Uid[" +l.getLoginUid()+"]\t");
                     }
                     //向在线用户广播某用户已上线
-                    NotificationService.notifyUserStatus(serverThread, user);
-                }else{
-                    serverThread.getOutput().writeObject(new InfoMessage("帐号或密码错误"));
+                    NotificationService.notifyUserStatus(thread.getUid(), "已上线");
+                }
+            } else {
+                //客户端修改用户信息
+                System.out.println("serverThread:"+ thread.getLoginBo());
+                System.out.println("msg:"+msg.getLoginBo());
+                if(thread.getLoginBo().getLoginUid().equals(msg.getLoginBo().getLoginUid())){
+                    thread.getOutput().writeObject(
+                            new InfoMessage(
+                                    UserService.updateUser(user, msg.getLoginBo()).getBriefInfo()));
                 }
             }
         } catch (IOException e) {
@@ -187,14 +176,14 @@ public class MsgService {
     }
 
     /**
-     * 处理聊天msg
+     * 处理聊天msg;
      * @param thread 要处理聊天信息的线程
      * @param msg 要处理的聊天信息
      */
-    private static void handleChatMsg(ServerThread thread, Message msg){
+    private static void handleChatMsg(ServerCallable thread, Message msg){
         try{
             //将聊天信息发给对应群组的每个成员
-            StatusCode e = MsgService.sendChatMsg((ChatMessage) msg).getStatusCode();
+            StatusCode e = ChatMsgService.sendChatMsg((ChatMessage) msg).getStatusCode();
             switch (e){
                 case NOT_FOUND_CODE:
                     thread.getOutput().writeObject(new InfoMessage("没有找到对应群组"));
@@ -203,7 +192,8 @@ public class MsgService {
                     thread.getOutput().writeObject(new InfoMessage("请先加入该群组"));
                     break;
                 case SUCCESS_CODE:
-                    if(ChatMsgService.addChatMsg((ChatMessage) msg).getStatusCode().equals(StatusCode.SUCCESS_CODE)){
+                    if(ChatMsgService.addChatMsg((ChatMessage) msg).getStatusCode()
+                            .equals(StatusCode.SUCCESS_CODE)){
                         System.out.println("聊天信息"+ msg +"已保存");
                     }else {
                         System.out.println("聊天信息"+ msg +"保存失败");
@@ -218,10 +208,10 @@ public class MsgService {
     }
 
     /**
-     * 处理查询msg
+     * 处理查询msg;
      * @param msg infoMessage
      */
-    private static void handleInfoMsg(ServerThread serverThread, Message msg){
+    private static void handleInfoMsg(ServerCallable serverCallable, Message msg){
         try{
             InfoMessage im = (InfoMessage) msg;
             switch (im.getInfoType()){
@@ -230,9 +220,8 @@ public class MsgService {
                     System.out.println("用户"+msg.getLoginBo()+"查询用户信息"+im.getSpecType());
                     for(String s : im.getSpecType()){
                         User user = UserService.queryUserById(s);
-                        if(user!=null){
-                            im.addInfo(user.toString());
-                        }
+                        //若用户存在, 返回[用户信息], 否则返回["用户不存在"]
+                        im.addInfo((user!=null)?user.toString():"用户不存在");
                     }
                     break;
                 case 'g':
@@ -240,9 +229,8 @@ public class MsgService {
                     System.out.println("用户"+msg.getLoginBo()+"查询群组信息"+im.getSpecType());
                     for(String s : im.getSpecType()){
                         Group group = GroupService.queryGroupById(s);
-                        if(group!=null){
-                            im.addInfo(group.toString());
-                        }
+                        //若群组存在, 返回[群组信息], 否则返回["群组不存在"]
+                        im.addInfo((group!=null)?group.toString():"群组不存在");
                     }
                     break;
                 case 'c':
@@ -259,7 +247,7 @@ public class MsgService {
                     im.addInfo("infoType无效"+im.getInfoType());
                     System.out.println("infoType无效"+im.getInfoType());
             }
-            serverThread.getOutput().writeObject(im);
+            serverCallable.getOutput().writeObject(im);
         } catch (IOException e) {
             e.printStackTrace();
         }
