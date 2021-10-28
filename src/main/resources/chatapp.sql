@@ -60,7 +60,10 @@ CREATE TABLE user_attention(
     #被关注者id
     accept_id VARCHAR(10) NOT NULL comment '被关注者',
     #关注的时间
-    follow_time TIMESTAMP NOT NULL comment '关注时间'
+    follow_time TIMESTAMP NOT NULL comment '关注时间',
+
+    FOREIGN KEY (follower_id) REFERENCES chat_user(uid),
+    FOREIGN KEY (accept_id) REFERENCES chat_user(uid)
 ) comment '关注列表';
 
 # 插入用户数据

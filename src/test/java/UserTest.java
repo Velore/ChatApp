@@ -81,7 +81,7 @@ public class UserTest {
     }
 
     @Test
-    public void queryUserLikeName(){
+    public void queryUserLikeNameTest(){
         SqlSession sqlSession = MybatisUtils.getSqlSession();
         try{
             UserMapper userMapper = sqlSession.getMapper(UserMapper.class);

@@ -1,10 +1,11 @@
-import com.czh.bo.LoginBo;
 import com.czh.dao.ChatMsgMapper;
 import com.czh.po.common.message.ChatMessage;
 import com.czh.utils.MybatisUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ChatMsgTest {
@@ -38,9 +39,24 @@ public class ChatMsgTest {
     }
 
     @Test
-    public void queryChatMsgWithSendTimeTest(){
+    public void queryChatMsgLikeMsgStrTest(){
         ChatMsgMapper mapper = MybatisUtils.getSqlSession().getMapper(ChatMsgMapper.class);
         List<ChatMessage> msgList = mapper.queryChatMsgLikeMsgStr("10001", "add");
+        for(ChatMessage message : msgList){
+            System.out.println(message);
+        }
+    }
+
+    /**
+     * 测试有问题
+     */
+    @Test
+    public void queryChatMsgWithSendTimeTest(){
+        LocalDateTime begin = LocalDateTime.parse("20000101101010", DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        LocalDateTime end = LocalDateTime.parse("20211101101010", DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        System.out.println(begin+"\t"+end);
+        ChatMsgMapper mapper = MybatisUtils.getSqlSession().getMapper(ChatMsgMapper.class);
+        List<ChatMessage> msgList = mapper.queryChatMsgWithSendTime("10001", begin, end);
         for(ChatMessage message : msgList){
             System.out.println(message);
         }

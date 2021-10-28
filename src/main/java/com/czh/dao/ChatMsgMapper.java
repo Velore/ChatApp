@@ -1,8 +1,9 @@
 package com.czh.dao;
 
 import com.czh.po.common.message.ChatMessage;
+import org.apache.ibatis.annotations.Param;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -54,6 +55,8 @@ public interface ChatMsgMapper {
      * @param endTime 结束时间
      * @return 聊天信息list
      */
-    List<ChatMessage> queryChatMsgWithSendTime(String gid, Timestamp beginTime, Timestamp endTime);
+    List<ChatMessage> queryChatMsgWithSendTime(@Param("gid") String gid,
+                                               @Param("beginTime") LocalDateTime beginTime,
+                                               @Param("endTime") LocalDateTime endTime);
 
 }

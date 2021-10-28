@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * attention目前无实体类
- * 只是作为User类的一个附加属性
  * @author chenzhuohong
  */
 public interface AttentionMapper {
@@ -51,7 +49,8 @@ public interface AttentionMapper {
      * @param beforeTime 时间点
      * @return 关注list
      */
-    List<String> queryAttentionBeforeTime(String followerId, LocalDateTime beforeTime);
+    List<String> queryAttentionBeforeTime(@Param("followerId") String followerId,
+                                          @Param("beforeTime") LocalDateTime beforeTime);
 
     /**
      * 根据传入的时间点查询在时间点之后的关注list
@@ -59,5 +58,6 @@ public interface AttentionMapper {
      * @param afterTime 时间点
      * @return 关注list
      */
-    List<String> queryAttentionAfterTime(String followerId, LocalDateTime afterTime);
+    List<String> queryAttentionAfterTime(@Param("followerId") String followerId,
+                                         @Param("afterTime") LocalDateTime afterTime);
 }

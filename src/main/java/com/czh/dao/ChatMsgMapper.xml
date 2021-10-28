@@ -5,10 +5,10 @@
 <mapper namespace="com.czh.dao.ChatMsgMapper">
 
     <resultMap id="ChatMsgMap" type="ChatMsg">
-        <id property="senderId" jdbcType="VARCHAR" column="sender_id"/>
         <id property="gid" jdbcType="VARCHAR" column="gid"/>
-        <result property="sendTime" jdbcType="TIMESTAMP" column="send_time"/>
+        <id property="senderId" jdbcType="VARCHAR" column="sender_id"/>
         <result property="msgStr" jdbcType="VARCHAR" column="msg_str"/>
+        <result property="sendTime" jdbcType="TIMESTAMP" column="send_time"/>
     </resultMap>
 
     <insert id="addChatMsg" parameterType="ChatMsg">
@@ -29,6 +29,12 @@
 
     <select id="queryChatMsgLikeMsgStr" parameterType="String" resultMap="ChatMsgMap">
         select * from chat_message where gid = #{arg0} and msg_str like concat('%', #{arg1}, '%')
+    </select>
+
+    <select id="queryChatMsgWithSendTime" resultMap="ChatMsgMap">
+        select * from chat_message where gid = #{gid} and send_time between #{beginTime} and #{endTime}
+#         select * from chat_message where gid = #{gid} and send_time &gt; #{beginTime} and send_time &lt; #{endTime}
+
     </select>
 
 </mapper>

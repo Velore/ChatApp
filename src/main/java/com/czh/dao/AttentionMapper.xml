@@ -4,6 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.czh.dao.AttentionMapper">
 
+    <resultMap id="AttentionMap" type="Attention">
+        <id property="followerId" jdbcType="VARCHAR" column="follower_id"/>
+        <id property="acceptId" jdbcType="VARCHAR" column="accept_id"/>
+        <result property="followTime" jdbcType="TIMESTAMP" column="follow_time"/>
+    </resultMap>
+
     <insert id="addAttention">
         insert into user_attention(follower_id, accept_id, follow_time)
         values (#{followerId}, #{acceptId}, #{followTime})
@@ -21,12 +27,12 @@
         select accept_id from user_attention where follower_id = #{uid}
     </select>
 
-    <select id="queryAttentionBeforeTime" resultType="String">
+    <select id="queryAttentionBeforeTime" resultMap="AttentionMap">
         select accept_id from user_attention where follower_id = #{followerId} and follow_time &lt; #{beforeTime}
     </select>
 
-    <select id="queryAttentionAfterTime" resultType="String">
-        select accept_id from user_attention where follower_id = #{followerId} and follow_time &gt; #{beforeTime}
+    <select id="queryAttentionAfterTime" resultMap="AttentionMap">
+        select accept_id from user_attention where follower_id = #{followerId} and follow_time &gt; #{afterTime}
     </select>
     
 </mapper>

@@ -18,6 +18,7 @@
         <typeAlias type="com.czh.po.common.Group" alias="Group"/>
         <typeAlias type="com.czh.po.common.GroupMember" alias="GroupMember"/>
         <typeAlias type="com.czh.po.common.message.ChatMessage" alias="ChatMsg"/>
+        <typeAlias type="com.czh.po.common.Attention" alias="Attention"/>
     </typeAliases>
 
     <environments default="dev">
@@ -38,6 +39,7 @@
         <mapper resource="com/czh/dao/GroupMapper.xml"/>
         <mapper resource="com/czh/dao/GroupMemberMapper.xml"/>
         <mapper resource="com/czh/dao/ChatMsgMapper.xml"/>
+        <mapper resource="com/czh/dao/AttentionMapper.xml"/>
     </mappers>
 
 </configuration>

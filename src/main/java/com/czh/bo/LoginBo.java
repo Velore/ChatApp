@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * 用户登录凭证
@@ -29,4 +30,20 @@ public class LoginBo implements Serializable {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        LoginBo loginBo = (LoginBo) o;
+        return loginUid.equals(loginBo.loginUid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(loginUid);
+    }
 }
