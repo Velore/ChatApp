@@ -15,13 +15,13 @@ import java.util.Arrays;
 import java.util.concurrent.Callable;
 
 /**
- * 服务器端为每一个连接的客户端新建一个处理线程ServerThread
- * 功能包括接收服务器发送的Message和发送对应的结果Message
+ * 服务器端为每一个连接的客户端新建一个处理对象ServerCallable,并开启线程进行处理
+ * 功能包括接收服务器发送的Message和发送对应的处理结果Message
  * @author chenzhuohong
  */
 @Getter
 @Setter
-public class ServerThread implements Callable<ReturnInfo>{
+public class ServerCallable implements Callable<ReturnInfo>{
 
     private final Socket socket;
 
@@ -35,7 +35,7 @@ public class ServerThread implements Callable<ReturnInfo>{
         return this.loginBo.getLoginUid();
     }
 
-    public ServerThread(Socket socket) {
+    public ServerCallable(Socket socket) {
         this.socket = socket;
         try{
             this.input = new ObjectInputStream(this.socket.getInputStream());
@@ -47,7 +47,6 @@ public class ServerThread implements Callable<ReturnInfo>{
 
     @Override
     public ReturnInfo call() {
-        System.out.println(this+"开始运行");
         try{
             while(!this.socket.isClosed()){
                 Message msgTemp = (Message) this.input.readObject();
@@ -59,10 +58,4 @@ public class ServerThread implements Callable<ReturnInfo>{
         }
         return new ReturnInfo(StatusCode.SUCCESS_CODE, "线程运行结束");
     }
-}
-
-class ServerRunner extends Thread{
-
-    public 
-
 }

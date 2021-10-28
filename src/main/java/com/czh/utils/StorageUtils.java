@@ -1,6 +1,7 @@
 package com.czh.utils;
 
 
+import com.czh.po.client.ClientInputHandler;
 import com.czh.po.common.Group;
 import com.czh.po.common.message.ChatMessage;
 import com.czh.po.common.User;
@@ -103,7 +104,7 @@ public class StorageUtils {
         try{
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file, true), StandardCharsets.UTF_8);
             writer.write(cm.getGid()+"\t");
-            writer.write(cm.getSendTime().format(MsgUtils.DATE_TIME_FORMATTER)+"\t");
+            writer.write(cm.getSendTime().format(ClientInputHandler.DATE_TIME_FORMATTER)+"\t");
             writer.write(cm.getSenderId()+"\t");
             writer.write(cm.getInfo());
             writer.write("\n");
@@ -130,7 +131,7 @@ public class StorageUtils {
             );
             while(reader.ready()){
                 String prevMsg = reader.readLine();
-                msgList.add(MsgUtils.stringToChatMsg(prevMsg, MsgUtils.STR_PATTERN));
+                msgList.add(ClientInputHandler.stringToChatMsg(prevMsg, ClientInputHandler.STR_PATTERN));
             }
         }catch (Exception e){
             e.printStackTrace();

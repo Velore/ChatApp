@@ -12,6 +12,6 @@ public class Client2 extends Client{
     }
 
     public static void main(String[] args) {
-        Client client2 = clientOnline("127.0.0.1", 6666);
+        clientLunch("127.0.0.1", 6666);
     }
 }
